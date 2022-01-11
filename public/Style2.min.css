@@ -1,0 +1,97 @@
+:root {
+  --ver-foncé:#008869;
+  --vert:#2ca58d;
+  --blanc: #F4EDED;
+  --gris-foncé:#565254;
+ }
+::-webkit-scrollbar{
+  width:10px;
+}
+::-webkit-scrollbar-track{
+  
+  background-color: white;
+}
+::-webkit-scrollbar-thumb{
+  background-color:#008869;
+  border-top-right-radius: 5px;
+}
+
+body{
+    margin:0px;
+    background-color:#F4EDED;
+    height:100vh;
+}
+
+  
+  
+  
+
+ 
+
+  
+.styled-table{
+  border-collapse: collapse;
+    border-top-left-radius: 10px;
+    border-top-right-radius:10px;
+    overflow :hidden;
+    font-size: 1em;
+    font-family: sans-serif;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    width:100%;
+
+
+}
+#flex{
+  display: flex; 
+
+}
+.containermenu{
+  width:20%;
+  min-width:300px;
+  position: sticky;
+  top: 0;
+  height:95.1vh;
+  border-right: 1px solid #444c56;
+  display:inline-block;
+  background-color:#252525;
+
+
+
+}
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+
+  position: sticky;
+  top:0;
+}
+td a{
+color:#009879;
+}
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  text-align:center;
+  
+}
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.styled-table tbody {
+min-height:92px;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid var(--vert);
+}
+
+#DivAgregation{
+  width: 100%;
+
+
+  display: inline-block;
+}

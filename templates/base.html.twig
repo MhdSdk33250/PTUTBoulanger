@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href={{asset("./Style.min.css")}}>
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+        {% block stylesheets %}
+
+            <link rel="stylesheet" href="./Style.min.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Roboto">
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% endblock %}
+
+        <title>Document</title>
+
+        {% block javascripts %}
+            {#{{ encore_entry_script_tags('app') }}#}
+        {% endblock %}
+    </head>
+    <body>
+<header>
+<nav id="navbar">
+
+<ul>
+  <li><a id="un" href="Films">Commandes</a></li>
+  <li><a id="deux" href="Acteurs">Acteurs</a></li>
+
+  <li id="profilDD" style="float:right; cursor:pointer;"> 
+  <div id="dropDownUsr">
+
+    <a href="./Autre/Deconnexion.php">Deconnexion</a>
+  </div>
+  <a>  Profil </a>
+</li>
+</ul>
+
+
+</nav>
+
+</header>
+
+            {% block body %}{% endblock %}
+
+        
+    </body>
+</html>
