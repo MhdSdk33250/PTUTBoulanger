@@ -14,13 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class Controller extends AbstractController
 {
 
-    
-    
 
     /**
-     * @Route("/Commandes",name="Agregations des commandes")
+     * @Route("/Accueil",name="page Accueil")
      */
-    public function Commandes(){
+    public function Accueil(){
 
 
 
@@ -40,7 +38,7 @@ class Controller extends AbstractController
         $Categories = $repositoryCategories->findAll();
 
 
-        return $this->render('Pages/Commandes.html.twig',[
+        return $this->render('Pages/AccueilAdmin.html.twig',[
                 'Factures'=>$Factures,
                 'Clients'=>$Clients,
                 'Articles'=>$Articles,
@@ -51,6 +49,46 @@ class Controller extends AbstractController
 
     );
     }
+    
+    
+
+    /**
+     * @Route("/Commandes",name="Agregations des commandes")
+     */
+    public function CommandesAgregation(){
+
+
+
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        $Produits = $repositoryProduits->findAll();
+
+        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class);
+        $Articles = $repositoryArticles->findAll();       
+
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Clients = $repositoryClients->findAll();   
+
+        $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
+        $Factures = $repositoryFactures->findAll();
+
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+        $Categories = $repositoryCategories->findAll();
+
+
+        return $this->render('Pages/CommandesAgregation.html.twig',[
+                'Factures'=>$Factures,
+                'Clients'=>$Clients,
+                'Articles'=>$Articles,
+                'Produits'=>$Produits,
+                'Categories'=>$Categories,
+                
+        ]
+
+    );
+    }
+
+
+    
 
  
 

@@ -1,0 +1,211 @@
+{% extends 'base.html.twig' %}
+
+
+        {% block stylesheets %}
+
+            
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% endblock %}
+{% block body %}
+<div id="flex">
+
+
+<div class="containermenu" id="flexcontainermenu">
+    <span style="color:white; margin-top:10px; margin-left:10px;">
+    connecté sur le compte de : ~    </span>
+
+    <div id="divrecherche">
+        <form id="formrecherche">
+           <span style="color:white"> Rechercher une commande :</span>
+        <input type="text" id="myInput" onkeyup="myFunction()">
+        <button type="submit"><i class="fa fa-times"></i></button>
+        </form>
+
+
+    </div>
+    </div>
+<div id="DivAgregation">
+
+<table class="styled-table">
+              <thead>
+                <tr>
+                    <td>facture n°</td>
+                    <td>Client</td>
+                    <td>Date</td>
+                    <td>total Articles</td>
+
+                    {% for produit in Produits %}
+
+                            
+
+
+                   <td colspan="3">{{produit.nomProduit}} </td>
+                      
+                    {% endfor %}
+
+                </tr>
+                <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              {% for produit in Produits %}
+
+                {% for categorie in Categories %}
+
+                    <td>{{categorie.poids}}g</td>
+
+                {% endfor %}
+
+              {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+
+                       {%  for facture in Factures %}  
+                        <tr>
+                            <td>{{facture.id}}</td>
+                            <td>{{facture.Client.nomClient}}</td>
+                            <td>{{facture.date |date('d/m/Y')}}</td>
+
+                            <td>
+                            {% set qteTotalArticles = 0 %}
+
+                            {% for article in facture.Articles %}
+                            {% set qteTotalArticles = qteTotalArticles + article.qte %}
+                            {% endfor %}
+                            {{qteTotalArticles}}
+                            
+                            </td>
+                            {% for produit in Produits %}
+                            
+                            
+                            {% for article in facture.Articles %}
+                            {% if article.Produit.nomProduit == produit.nomProduit %}
+                            <td>
+                            
+
+                    
+
+                      
+                      {{article.qte}}
+                      
+
+</td>
+                            {% endif %}
+                            {% if article.Produit.nomProduit != produit.nomProduit %}
+                            <td>
+                            
+
+                    
+
+                      
+                     
+                      
+
+</td>
+                            {% endif %}
+                            {% endfor %}
+                            
+                            
+                            {% endfor %}
+
+
+                        </tr>
+
+
+                       {% endfor %}       
+
+                                
+
+              </tbody>
+
+              <thead>
+                <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total produits </td>
+                                         {% set i = 0 %}
+                    {% for produit in Produits %}
+                            {%  for facture in Factures %} 
+                            
+                              {% for article in facture.Articles %}
+                                {% if article.Produit.nomProduit == produit.nomProduit %}
+                                 {% set i = i+1 %}
+                                {% endif %}
+                              {% endfor %}
+                            {% endfor %}
+                             {% endfor %}
+
+
+
+                            {% for produit in Produits %}
+
+                          {% set somme = 0 %}
+                              {% for facture in Factures %}
+                                {% for article in facture.Articles %}
+                                {% if article.produit.nomProduit == produit.nomProduit %}
+                                  {% set somme = somme + article.qte %}
+                                {% endif %}
+
+                                  
+                                {% endfor %}
+                              {% endfor %}
+
+
+
+                              {% if somme !=0 %}
+                              {% endif %}
+
+                          <td  colspan="3">
+
+
+
+                          {% set somme = 0 %}
+                              {% for facture in Factures %}
+                                {% for article in facture.Articles %}
+                                {% if article.produit.nomProduit == produit.nomProduit %}
+                                  {% set somme = somme + article.qte %}
+                                {% endif %}
+
+                                  
+                                {% endfor %}
+                              {% endfor %}
+
+
+
+                              {{somme}}
+                              
+                          </td>
+                            {% endfor %}
+                            
+                            
+                </tr>
+                <tr><td></td><td></td><td></td><td>kg pain par recette</td>
+                
+                
+                {% for produit in Produits %}
+                  {% set qtePainParRecette = 0 %}
+                  {% for facture in Factures %} 
+                  
+                  {% for article in facture.Articles %}
+                    {% if article.produit == produit %}
+                     {% set qtePainParRecette = qtePainParRecette + article.categorie.poids * article.qte %}
+                    
+                    
+                    {% endif %}
+                    {% endfor %}
+           
+                  {% endfor %}
+                           <td colspan="3">{{qtePainParRecette}}g</td>
+                {% endfor %}
+                </tr>
+              </thead>
+
+            </table>
+</div>
+
+{% endblock body %}
