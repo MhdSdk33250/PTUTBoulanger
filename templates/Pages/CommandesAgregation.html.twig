@@ -3,7 +3,7 @@
 
         {% block stylesheets %}
 
-            
+            <link rel="stylesheet" href="./Style.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,8 +29,8 @@
 <div id="DivAgregation">
 
 <table class="styled-table">
-              <thead>
-                <tr>
+              
+                <tr id="Sticky">
                     <td>facture n°</td>
                     <td>Client</td>
                     <td>Date</td>
@@ -46,7 +46,7 @@
                     {% endfor %}
 
                 </tr>
-                <tr>
+                <tr id="Sticky2">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -61,7 +61,7 @@
 
               {% endfor %}
                 </tr>
-              </thead>
+              
               <tbody>
 
                        {%  for facture in Factures %}  
@@ -122,8 +122,8 @@
 
               </tbody>
 
-              <thead>
-                <tr>
+              
+                <tr style="border-top:#008f72 3px solid;">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -203,7 +203,7 @@
                            <td colspan="3">{{qtePainParRecette}}g</td>
                 {% endfor %}
                 </tr>
-              </thead>
+              
 
             </table>
 </div>
