@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+
+        {% block stylesheets %}
+
+            
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% endblock %}
+{% block body %}
+<div id="flex">
+
+
+<div class="containermenu" id="flexcontainermenu">
+    <span style="color:white; margin-top:10px; margin-left:10px;">
+    connecté sur le compte de : ~    </span>
+
+    <div id="divrecherche">
+        <form id="formrecherche">
+           <span style="color:white"> Rechercher un article :</span>
+        <input type="text" id="myInput" onkeyup="myFunction()">
+        <button type="submit"><i class="fa fa-times"></i></button>
+        </form>
+
+
+    </div>
+    </div>
+<div id="DivAgregation">
+
+<table class="styled-table">
+              
+                <tr id="Sticky">
+                    <td>Intitulé</td>
+                    <td>Qte en stock</td>
+                    <td>Action<td>
+                    
+
+
+              
+              <tbody>
+                {% for produit in Produits %}
+                    <tr><td>{{produit.nomProduit}}</td><td>nombre En Stock</td><td><a class="buttonClass" href="/ProduitSuppr?idProduitsuppr={{produit.id}}">Supprimer<a><a class="buttonClass2" href="/ProduitSuppr?idProduitsEdit={{produit.id}}">Modifier<a></td>
+                        
+                    </tr>
+                    
+                {% endfor %}
+              </tbody>
+
+              
+
+            </table>
+</div>
+
+{% endblock body %}

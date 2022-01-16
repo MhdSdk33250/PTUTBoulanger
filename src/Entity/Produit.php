@@ -40,6 +40,11 @@ class Produit
      */
     private $categorie;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $QteEnStock;
+
 
 
 
@@ -122,6 +127,18 @@ class Produit
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getQteEnStock(): ?int
+    {
+        return $this->QteEnStock;
+    }
+
+    public function setQteEnStock(?int $QteEnStock): self
+    {
+        $this->QteEnStock = $QteEnStock;
 
         return $this;
     }

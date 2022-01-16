@@ -50,6 +50,7 @@ li a:hover:not(.active) {
   top:42px;
   z-index:1;
 }
+
 header{
   z-index:10;
   position: sticky;
@@ -120,7 +121,7 @@ header{
   border: none;
   background:white;
 
-  transition: all 0.5s;
+
 }
 #formrecherche button[type=submit]{
   width:40px;
@@ -153,26 +154,64 @@ header{
 }
 
 .buttonClass {
-  margin-top:20px;
-  margin-bottom:20px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align:center;
-  width: 253px;
-  padding: 6px 10px;
-  border-width:1px;
-  color:#fff;
-  border-color:#241d13;
-  font-weight:bold;
-  border-top-left-radius:0px;
-  border-top-right-radius:0px;
-  border-bottom-left-radius:0px;
-  border-bottom-right-radius:0px;
-  box-shadow:inset 0px 30px 0px -15px #b54b3a;
- 
-  background:#a73f2d;
-  transition: all 0.5s;
+
+text-align:center;
+
+width: 253px;
+
+padding: 10px 30px;
+
+border-width:1px;
+
+color:#fff;
+
+border-color:#241d13;
+
+font-weight:bold;
+
+border-top-left-radius:0px;
+
+border-top-right-radius:0px;
+
+border-bottom-left-radius:0px;
+
+border-bottom-right-radius:0px;
+
+
+background:#a73f2d;
+
+
 }
+.buttonClass2 {
+
+  text-align:center;
+  
+  width: 253px;
+  
+  padding: 10px 30px;
+  
+  border-width:1px;
+  
+  color:#fff;
+  
+  border-color:#241d13;
+  
+  font-weight:bold;
+  
+  border-top-left-radius:0px;
+  
+  border-top-right-radius:0px;
+  
+  border-bottom-left-radius:0px;
+  
+  border-bottom-right-radius:0px;
+  
+
+  margin-left:10px;
+  background:#009879;
+  
+
+  }
 .buttonClassConnexion {
   cursor: pointer;
 
@@ -196,7 +235,7 @@ header{
   top:10px;
 
 
-  transition: all 0.5s;
+
 }
 .buttonClassInscription {
   cursor: pointer;
@@ -221,7 +260,7 @@ header{
   top:10px;
 
 
-  transition: all 0.5s;
+
 }
 #RegisterLink{
   position:relative;
@@ -230,7 +269,7 @@ header{
   top:20px;
   text-decoration: none;
   color:white;
-  transition:all 1s;
+
 }
 #RegisterLink:hover{
   text-decoration: underline;
@@ -260,13 +299,13 @@ header{
   border-bottom-right-radius:0px;
   background-color: #008f72;
   box-shadow: inset 0px 35px 0px -15px #009879;
-  transition: all 0.5s;
+
 }
 
 .buttonClass:hover {
 
 
-  transform:scale(1.1);
+  transform:scale(0.5);
 }
 td a{
   vertical-align: middle;

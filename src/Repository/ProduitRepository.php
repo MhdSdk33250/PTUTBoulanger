@@ -19,6 +19,18 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
+
+    public function deleteProduitById($id){
+        $QueryBuilder = $this->createQueryBuilder('p')
+        ->delete()
+        ->where('p.id = '.$id);
+
+
+   
+
+        return $QueryBuilder->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Produit[] Returns an array of Produit objects
     //  */
