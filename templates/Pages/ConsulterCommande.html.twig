@@ -1,0 +1,69 @@
+
+{% block body %}
+<link rel="stylesheet" href="./Style.min.css">
+<header>
+<nav id="navbar">
+
+<ul>
+<li><a  href="Accueil">Retour a l'accueil</a></li>
+
+
+  <li id="profilDD" style="float:right; cursor:pointer;"> 
+  <div id="dropDownUsr">
+
+    <a href="./Autre/Deconnexion.php">Deconnexion</a>
+  </div>
+  <a>  Profil </a>
+</li>
+</ul>
+
+
+</nav>
+
+</header>
+
+
+
+
+
+<form action="Modif">
+<table style="width:500px;margin:auto;" class="styled-table">
+              
+                <tr  id="Sticky">
+                    <td colspan="2" >1</td>
+                    <td >2</td>
+                    </tr>
+              
+
+              
+            <tr><td colspan="2">Nom Commanditaire</td><td><input style="font-size:20px;" value="{{Commande.Client.nomClient}}"></td></tr>
+             <tr><td colspan="2">date de commande</td><td><input type="date" style="font-size:20px;" value="{{Commande.date |date("Y-m-d")}}"></td></tr>
+            <tr  id="Sticky">
+                    <td >Articles</td>
+                    <td >quantité</td>
+                    <td >Poids</td>
+                    </tr>
+                {% for article in Commande.articles %}
+
+            <tr><td><select name="produits[]" id="produitselected"><option value="{{article.produit.id}}">{{article.produit.nomProduit}}</option>
+            
+            {% for produitoption in Produits %}
+                <option value="{{produitoption.id}}">{{produitoption.nomProduit}}</option>
+                
+            {% endfor %}
+            </select></td> <td><input name="qte[]" type="number" value="{{article.qte}}"></td><td>
+            <select name="Poids[]" id="poidsselected" >
+            <option value="{{article.categorie.id}}">{{article.categorie.poids}}g</option>
+            {% for categorie in Categories %}
+            <option value="{{categorie.id}}">{{categorie.poids}}g</option>
+            {% endfor %}
+
+            </select>
+            {#<input type="number" value="{{article.categorie.poids}}">#}
+            
+            </td></tr>
+            {% endfor %}
+            </table>
+  <input type="submit" value="Sauvegarder">
+  </form>
+{% endblock body %}

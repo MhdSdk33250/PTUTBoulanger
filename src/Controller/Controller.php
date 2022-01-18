@@ -15,7 +15,15 @@ use Symfony\Component\HttpFoundation\Request;
 class Controller extends AbstractController
 {
 
-
+    /**
+     * @Route("/Modif",name="Modif")
+     */
+    public function Modif(){
+    
+        var_dump($_GET);
+        die;
+    
+    }
 
     /**
      * @Route("/Accueil",name="Accueil")
@@ -82,6 +90,8 @@ class Controller extends AbstractController
         $entityManager=$this->getDoctrine()->getManager();
         $idCommande = $request->query->get('CommandeSuppr');
         $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class);
+
+        
         
         $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
         
@@ -90,6 +100,32 @@ class Controller extends AbstractController
 
 
         return $this->redirectToRoute('Accueil');
+        
+    }
+    /**
+     * @Route("/ConsulterCommande",name="ConsulterCommande")
+     */
+    public function ConsulterCommande(Request $request){
+
+        //
+        $entityManager=$this->getDoctrine()->getManager();
+        $idCommande = $request->query->get('idCommande');
+        $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class);
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        $Produits = $repositoryProduits->findAll();
+        $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
+        
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+        $Categories = $repositoryCategories->findAll();
+        
+        
+
+        return $this->render('Pages/ConsulterCommande.html.twig',[
+            'Commande'=>$Commande,'Produits'=>$Produits,'Categories'=>$Categories
+            
+    ]
+
+);
         
     }
 

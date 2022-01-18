@@ -36,10 +36,10 @@
                     <td>Date</td>
                     <td>total Articles</td>
                     <td>Action</td>
-
+    </tr>
 
               
-              <tbody>
+              <tbody id="myTable">
 
                        {%  for facture in Factures %}  
                         <tr class="trInfosFacture">
@@ -56,7 +56,7 @@
                             {{qteTotalArticles}}
                             
                             </td>
-                             <td><a class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{facture.id}}">Supprimer<a><a class="buttonClass2" href="/ProduitSuppr">Consulter<a></td>
+                             <td><a class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{facture.id}}">Supprimer<a><a class="buttonClass2" href="/ConsulterCommande?idCommande={{facture.id}}">Consulter<a></td>
                             
                            
                             
@@ -77,5 +77,25 @@
 
             </table>
 </div>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
 
 {% endblock body %}
