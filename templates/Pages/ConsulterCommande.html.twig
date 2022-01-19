@@ -35,9 +35,14 @@
                     </tr>
               
 
-              
-            <tr><td colspan="2">Nom Commanditaire</td><td><input style="font-size:20px;" value="{{Commande.Client.nomClient}}"></td></tr>
-             <tr><td colspan="2">date de commande</td><td><input type="date" style="font-size:20px;" value="{{Commande.date |date("Y-m-d")}}"></td></tr>
+            <tr><td colspan="2">Id commande</td><td><input readonly  name="idCommande" style="font-size:20px;" value="{{Commande.id}}"></td></tr>
+            <tr><td colspan="2">Nom Commanditaire</td><td><select name="idClient" style="font-size:20px;"> <option value="{{Commande.Client.id}}">{{Commande.Client.nomClient}} </option> 
+            {% for client in Clients %}
+              <option value="{{client.id}}">{{client.nomClient}} </option>
+            {% endfor %}
+            
+            </select></td></tr>
+             <tr><td colspan="2">date de commande</td><td><input name="date" type="date" style="font-size:20px;" value="{{Commande.date |date("Y-m-d")}}"></td></tr>
             <tr  id="Sticky">
                     <td >Articles</td>
                     <td >quantité</td>

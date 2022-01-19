@@ -12,16 +12,78 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+
 class Controller extends AbstractController
 {
 
     /**
      * @Route("/Modif",name="Modif")
      */
-    public function Modif(){
-    
-        var_dump($_GET);
-        die;
+    public function Modif(Request $request){
+        $manager = $this->getDoctrine()->getManager();
+        
+        //nouveau client
+        $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class); 
+        $idCommande = $_GET['idCommande'];
+        $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
+        
+        
+        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class); 
+        $articles = $Commande->getArticles();
+        
+        
+        
+        
+
+        
+
+        
+        $nbrArticlesAvantModif = 0;
+        foreach($articles as $article){
+            $nbrArticlesAvantModif = $nbrArticlesAvantModif +1;
+        }
+        
+        
+
+        for($i = 0;$i != $nbrArticlesAvantModif;$i++){
+            $idProduit = $_GET["produits"][$i];
+            $qteArticle = $_GET["qte"][$i];
+            $idCategorieArticle = $_GET["Poids"][$i];
+
+            $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+            $Produit = $repositoryProduits->findOneBy(['id'=>$idProduit]);  
+
+            $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
+            $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
+            
+            $articles[$i]->setProduit($Produit);
+            $articles[$i]->setQte($qteArticle);
+            $articles[$i]->setPoids($Categorie->getPoids());
+            
+
+        }
+
+
+        $idClient = $_GET['idClient'];
+         
+        
+
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Client = $repositoryClients->findOneBy(['id'=>$idClient]);  
+
+        
+        $manager->persist($Client);
+        $manager->flush();
+        //on crée la commande (commande = facture)
+        
+        $Commande->setDate(new \DateTime($_GET['date']))
+            ->setClient($Client);
+        $manager->persist($Commande);
+        $manager->flush();
+
+        
+        
+        return $this->redirectToRoute("ConsulterCommande",['idCommande'=>$idCommande]);
     
     }
 
@@ -114,7 +176,8 @@ class Controller extends AbstractController
         $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
         $Produits = $repositoryProduits->findAll();
         $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
-        
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Clients = $repositoryClients->findAll(); 
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
         
@@ -122,6 +185,7 @@ class Controller extends AbstractController
 
         return $this->render('Pages/ConsulterCommande.html.twig',[
             'Commande'=>$Commande,'Produits'=>$Produits,'Categories'=>$Categories
+            ,'Clients'=>$Clients
             
     ]
 

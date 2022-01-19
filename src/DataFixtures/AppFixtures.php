@@ -16,15 +16,15 @@ class AppFixtures extends Fixture
         // on cree les catégories 
 
         $categorie250 = new categorie();
-        $categorie250->setPoids(250);
+        $categorie250->setPoids(500);
         $manager->persist($categorie250);
 
         $categorie500 = new categorie();
-        $categorie500->setPoids(500);
+        $categorie500->setPoids(100);
         $manager->persist($categorie500);
 
         $categorie1000 = new categorie();
-        $categorie1000->setPoids(1000);
+        $categorie1000->setPoids(200);
         $manager->persist($categorie1000);
         //creation de 3 produit fictif
         $produit1 = new Produit();
