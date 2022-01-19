@@ -20,6 +20,10 @@ class Controller extends AbstractController
      * @Route("/Modif",name="Modif")
      */
     public function Modif(Request $request){
+        $nbrArticlesApresModif=sizeof($_GET["produits"]);
+        
+        
+
         $manager = $this->getDoctrine()->getManager();
         
         //nouveau client
@@ -60,6 +64,15 @@ class Controller extends AbstractController
             $articles[$i]->setQte($qteArticle);
             $articles[$i]->setCategorie($Categorie);
             $manager->flush();
+            
+        }
+
+
+        for($j = $nbrArticlesAvantModif;$j != $nbrArticlesApresModif;$j++){
+            echo "on crée un nouvel article";
+            //CREER OBJET ARTICLE
+            //LIER LOBJET A LA BD
+            //PERSIST ET FLUSH LOBJET!!!
             
         }
         

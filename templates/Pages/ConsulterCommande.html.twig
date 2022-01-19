@@ -7,7 +7,7 @@
 <ul>
 <li><a  href="Accueil">Retour a l'accueil</a></li>
 
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <li id="profilDD" style="float:right; cursor:pointer;"> 
   <div id="dropDownUsr">
 
@@ -47,7 +47,7 @@
                     <td >Articles</td>
                     <td >quantité</td>
                     <td >Poids</td>
-                    </tr>
+                    </tr><tbody id="tbodytab">
                 {% for article in Commande.articles %}
 
             <tr><td><select name="produits[]" id="produitselected">
@@ -64,11 +64,31 @@
             {% endfor %}
 
             </select>
-            {#<input type="number" value="{{article.categorie.poids}}">#}
+            
             
             </td></tr>
             {% endfor %}
+            
+            </tbody>
+            <td><input type="button" name="add" id="add" value="Ajouter un article"></td>
             </table>
   <input type="submit" value="Sauvegarder">
   </form>
+  {% block javascript %}
+  <script type="text/javascript">
+    // add row
+    $("#add").click(function () {
+      console.log('test');
+       var html = "<tr><td><select name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}}</option>{% endfor %}</select></td> <td><input name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option value='{{categorie.id}}'>{{categorie.poids}}g</option>{% endfor %}</select></td></tr>";
+       var test = "<td>ok</td>";
+
+        $('#tbodytab').append(html);
+    });
+    $(document).on('click', '#del', function () {
+        $(this).closest('#row').remove();
+    });
+
+
+</script>
+{% endblock %}
 {% endblock body %}
