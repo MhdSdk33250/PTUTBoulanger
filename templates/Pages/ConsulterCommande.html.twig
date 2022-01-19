@@ -50,10 +50,10 @@
                     </tr>
                 {% for article in Commande.articles %}
 
-            <tr><td><select name="produits[]" id="produitselected"><option value="{{article.produit.id}}">{{article.produit.nomProduit}}</option>
+            <tr><td><select name="produits[]" id="produitselected">
             
             {% for produitoption in Produits %}
-                <option value="{{produitoption.id}}">{{produitoption.nomProduit}}</option>
+                <option {% if article.produit.id == produitoption.id %} {{" selected "}} {% endif %} value="{{produitoption.id}}">{{produitoption.nomProduit}}</option>
                 
             {% endfor %}
             </select></td> <td><input name="qte[]" type="number" value="{{article.qte}}"></td><td>

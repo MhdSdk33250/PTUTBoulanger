@@ -58,11 +58,12 @@ class Controller extends AbstractController
             
             $articles[$i]->setProduit($Produit);
             $articles[$i]->setQte($qteArticle);
-            $articles[$i]->setPoids($Categorie->getPoids());
+            $articles[$i]->setCategorie($Categorie);
+            $manager->flush();
             
-
         }
-
+        
+        
 
         $idClient = $_GET['idClient'];
          
