@@ -73,51 +73,36 @@
 
                             <td>
                             {% set qteTotalArticles = 0 %}
-
+                            
+                            
                             {% for article in facture.Articles %}
-                            {% set qteTotalArticles = qteTotalArticles + article.qte %}
+                              {% set qteTotalArticles = qteTotalArticles + article.qte %}
                             {% endfor %}
                             {{qteTotalArticles}}
                             
                             </td>
-                            {% for produit in Produits %}
                             
                             
-                            {% for article in facture.Articles %}
-                            {% if article.Produit.nomProduit == produit.nomProduit %}
-                            <td>
+                            
+                            
+                            
                             
 
-                    
-
-                      
-                      {{article.qte}}
-                      
-
-</td>
-                            {% endif %}
-                            {% if article.Produit.nomProduit != produit.nomProduit %}
-                            <td>
-                            
-
-                    
-
-                      
-                     
-                      
-
-</td>
-                            {% endif %}
+                         {% for produit in Produits %}
+                            {% for categorie in Categories %}<td>
+                              {% for article in facture.Articles %}
+                              {% if article.categorie.Poids is same as categorie.Poids %}
+                              {% if article.Produit is same as produit %}
+                              {{article.qte}}
+                              {% endif %}
+                              {% endif %}
+                              {% endfor %}</td>
                             {% endfor %}
-                            
-                            
-                            {% endfor %}
-
-
+                         {% endfor %}
                         </tr>
-
-
-                       {% endfor %}       
+{% endfor %}  
+  
+                          
 
                                 
 
@@ -134,8 +119,8 @@
                             {%  for facture in Factures %} 
                             
                               {% for article in facture.Articles %}
-                                {% if article.Produit.nomProduit == produit.nomProduit %}
-                                 {% set i = i+1 %}
+                                {% if article.Produit.nomProduit is same as(produit.nomProduit) %}
+                                 {% set i = i + 1 %}
                                 {% endif %}
                               {% endfor %}
                             {% endfor %}
@@ -144,18 +129,18 @@
 
 
                             {% for produit in Produits %}
-
+                          
                           {% set somme = 0 %}
                               {% for facture in Factures %}
                                 {% for article in facture.Articles %}
-                                {% if article.produit.nomProduit == produit.nomProduit %}
+                                {% if article.produit.nomProduit is same as(produit.nomProduit) %}
                                   {% set somme = somme + article.qte %}
                                 {% endif %}
 
                                   
                                 {% endfor %}
                               {% endfor %}
-
+ 
 
 
                               {% if somme !=0 %}
@@ -165,11 +150,14 @@
 
 
 
-                          {% set somme = 0 %}
+                          {% set somme2 = 0 %}
+                          
                               {% for facture in Factures %}
                                 {% for article in facture.Articles %}
-                                {% if article.produit.nomProduit == produit.nomProduit %}
-                                  {% set somme = somme + article.qte %}
+                               
+                                {% if article.produit.nomProduit is same as(produit.nomProduit)%}
+                                  {% set somme2 = somme2 + article.qte %}
+                                  
                                 {% endif %}
 
                                   
@@ -178,7 +166,7 @@
 
 
 
-                              {{somme}}
+                              {{somme2}}
                               
                           </td>
 
@@ -194,7 +182,7 @@
                   {% for facture in Factures %} 
                   
                   {% for article in facture.Articles %}
-                    {% if article.produit == produit %}
+                    {% if article.produit is same as(produit) %}
                      {% set qtePainParRecette = qtePainParRecette + article.categorie.poids * article.qte %}
                     
                     

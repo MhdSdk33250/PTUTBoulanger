@@ -17,12 +17,72 @@ class Controller extends AbstractController
 {
 
     /**
+     * @Route("/ArticleSuppr",name="articleSuppr")
+     */
+    public function ArticleSuppr(Request $request){
+        $entityManager=$this->getDoctrine()->getManager();
+        $idArticle=$_GET['idArticle'];
+        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class); 
+        $Article = $repositoryArticles->findOneBy(['id'=>$idArticle]);
+
+        $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class); 
+        $idCommande = $_GET['idCommande'];
+        $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
+
+        $entityManager->remove($Article);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute("ConsulterCommande",['idCommande'=>$idCommande]);
+
+
+
+
+
+    }
+
+/**
+     * @Route("/PasserCommande",name="PasserCommande")
+     */
+    public function PasserCommande(Request $request){
+
+        //
+        $entityManager=$this->getDoctrine()->getManager();
+        //$idCommande = $request->query->get('idCommande');
+        $Commande = new Facture();
+        
+        $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class);
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        $Produits = $repositoryProduits->findAll();
+        
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Clients = $repositoryClients->findAll(); 
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+        $Categories = $repositoryCategories->findAll();
+        
+        var_dump($_GET);die;
+        
+
+        return $this->render('Pages/PasserCommande.html.twig',[
+            'Commande'=>$Commande,'Produits'=>$Produits,'Categories'=>$Categories
+            ,'Clients'=>$Clients
+            
+    ]
+
+);}
+    /**
      * @Route("/Modif",name="Modif")
      */
     public function Modif(Request $request){
+        
         $nbrArticlesApresModif=sizeof($_GET["produits"]);
         
+        $idClient = $_GET['idClient'];
+         
         
+
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Client = $repositoryClients->findOneBy(['id'=>$idClient]);
 
         $manager = $this->getDoctrine()->getManager();
         
@@ -33,7 +93,27 @@ class Controller extends AbstractController
         
         
         $repositoryArticles = $this->getDoctrine()->getRepository(Article::class); 
-        $articles = $Commande->getArticles();
+        $articles = $Commande->getArticles();;
+        $articleVerifRedondance = [];
+        
+
+
+        for($i = 0;$i != $nbrArticlesApresModif;$i++){
+            $idProduit = $_GET["produits"][$i];
+            $qteArticle = $_GET["qte"][$i];
+            $idCategorieArticle = $_GET["Poids"][$i];
+
+            $articleVerifRedondance[$i][] = $idProduit;
+            
+            $articleVerifRedondance[$i][] = $idCategorieArticle;
+
+        }
+        
+        
+        
+        
+        
+        
         
         
         
@@ -63,39 +143,76 @@ class Controller extends AbstractController
             $articles[$i]->setProduit($Produit);
             $articles[$i]->setQte($qteArticle);
             $articles[$i]->setCategorie($Categorie);
-            $manager->flush();
+            
+            
+            $articleVerifRedondance[] = $articles[$i];
+            
             
         }
-
+        
 
         for($j = $nbrArticlesAvantModif;$j != $nbrArticlesApresModif;$j++){
-            echo "on crée un nouvel article";
-            //CREER OBJET ARTICLE
+            
+            $articles[$j] = new Article();
+            
+            
+            $idProduit = $_GET["produits"][$j];
+            $qteArticle = $_GET["qte"][$j];
+            $idCategorieArticle = $_GET["Poids"][$j];
+
+            $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+            $Produit = $repositoryProduits->findOneBy(['id'=>$idProduit]);  
+
+            $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
+            $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
+            
+            $articles[$j]->setProduit($Produit);
+            $articles[$j]->setQte($qteArticle);
+            $articles[$j]->setCategorie($Categorie);
+            $articles[$j]->setTotal("0")
+            ->setFacture($Commande);
+            
+            
+            $manager->persist($articles[$j]);
+            $Commande->addArticle($articles[$j]);
+            
+
+            
+            $articleVerifRedondance[] = $articles[$j];
+            
             //LIER LOBJET A LA BD
             //PERSIST ET FLUSH LOBJET!!!
             
         }
+        foreach($Commande->getArticles()  as $article){
+            echo $article->getQte();
+        }
+        
         
         
 
-        $idClient = $_GET['idClient'];
-         
         
-
-        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
-        $Client = $repositoryClients->findOneBy(['id'=>$idClient]);  
 
         
         $manager->persist($Client);
-        $manager->flush();
+        
         //on crée la commande (commande = facture)
         
         $Commande->setDate(new \DateTime($_GET['date']))
             ->setClient($Client);
         $manager->persist($Commande);
-        $manager->flush();
-
         
+
+        $taille = sizeof($articleVerifRedondance);
+        $articleVerifRedondance = array_intersect_key($articleVerifRedondance, array_unique(array_map('serialize', $articleVerifRedondance)));
+        
+        
+        if(sizeof($articleVerifRedondance) != $taille ){
+            echo "deux articles sont identiques, veuillez saisir un article different par ligne";die;
+            
+        }else{
+            echo "ok";$manager->flush();
+        }
         
         return $this->redirectToRoute("ConsulterCommande",['idCommande'=>$idCommande]);
     
@@ -170,7 +287,9 @@ class Controller extends AbstractController
         
         
         $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
-        
+        foreach($Commande->getArticles() as $article){
+            $entityManager->remove($article);
+        }
         $entityManager->remove($Commande);
         $entityManager->flush();
 
@@ -275,6 +394,7 @@ class Controller extends AbstractController
 
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
+
 
 
         return $this->render('Pages/CommandesAgregation.html.twig',[
