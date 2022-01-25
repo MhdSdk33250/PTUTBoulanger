@@ -28,17 +28,17 @@ class AppFixtures extends Fixture
         $manager->persist($categorie1000);
         //creation de 3 produit fictif
         $produit1 = new Produit();
-        $produit1 -> setNomProduit("pain au noix")
+        $produit1 -> setNomProduit("pain au noix")->setKgPateParKg(1)
         ->setPrixUnitaire(5.2);
         $manager->persist($produit1);
 
         $produit2 = new Produit();
-        $produit2 -> setNomProduit("pain d'épice")
+        $produit2 -> setNomProduit("pain d'épice")->setKgPateParKg(0.8)
         ->setPrixUnitaire(5.2);
         $manager->persist($produit2);
 
         $produit3 = new Produit();
-        $produit3 -> setNomProduit("croissants")
+        $produit3 -> setNomProduit("croissants")->setKgPateParKg(1.3)
         ->setPrixUnitaire(5.2);
         $manager->persist($produit3);
 
@@ -130,53 +130,6 @@ class AppFixtures extends Fixture
         $facture2->addArticle($article10);
         $facture2->addArticle($article20);
         $facture2->addArticle($article30);
-
-
-
-
-
-        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);
-        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);
-        $facture1 = new Facture();
-        $facture1->setDate(new \DateTime())
-            ->setClient($client1);
-        $manager->persist($facture1);
-       
-
-
 
 
 

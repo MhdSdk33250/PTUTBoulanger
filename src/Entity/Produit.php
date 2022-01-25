@@ -45,6 +45,11 @@ class Produit
      */
     private $QteEnStock;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $kgPateParKg;
+
 
 
 
@@ -139,6 +144,18 @@ class Produit
     public function setQteEnStock(?int $QteEnStock): self
     {
         $this->QteEnStock = $QteEnStock;
+
+        return $this;
+    }
+
+    public function getKgPateParKg(): ?float
+    {
+        return $this->kgPateParKg;
+    }
+
+    public function setKgPateParKg(?float $kgPateParKg): self
+    {
+        $this->kgPateParKg = $kgPateParKg;
 
         return $this;
     }

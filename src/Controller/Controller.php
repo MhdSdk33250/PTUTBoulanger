@@ -59,8 +59,45 @@ class Controller extends AbstractController
         $Clients = $repositoryClients->findAll(); 
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
+        if(isset($_GET['idClient'])){
+           
+
+            $idClient = $_GET['idClient'];
+            $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+            $Client = $repositoryClients->findOneBy(['id'=>$idClient]);
+
+
+
+            $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class); 
+            $Commande = new Facture();
+            $Commande->setClient($Client);
+            $Commande->setDate(new \DateTime($_GET['date']));
+
+            $nbrArticles=sizeof($_GET["produits"]);
+            for($i = 0;$i != $nbrArticles;$i++){
+                $article = new Article();
+                
+                
+                $idProduit = $_GET["produits"][$i];
+                $qteArticle = $_GET["qte"][$i];
+                $idCategorieArticle = $_GET["Poids"][$i];
+
+                $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+                $Produit = $repositoryProduits->findOneBy(['id'=>$idProduit]);  
+
+                $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
+                $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
+                $Commande->addArticle($article);
+                $article->setProduit($Produit);
+                $article->setQte($qteArticle);
+                $article->setTotal(0);
+                $article->setCategorie($Categorie);
+                $entityManager->persist($article);
+                $entityManager->persist($Commande);
+                $entityManager->flush();
+                }
+        }
         
-        var_dump($_GET);die;
         
 
         return $this->render('Pages/PasserCommande.html.twig',[

@@ -43,7 +43,7 @@
             {% endfor %}
             
             </select></td></tr>
-             <tr><td colspan="3">date de commande</td><td><input name="date" type="date" style="font-size:20px;" value=""></td></tr>
+             <tr><td colspan="3">date de commande</td><td><input required="required" name="date" type="date" style="font-size:20px;" value=""></td></tr>
             <tr  id="Sticky">
                     <td >Articles</td>
                     <td >quantité</td>
@@ -64,7 +64,7 @@
     // add row
     $("#add").click(function () {
       console.log('test');
-       var html = "<tr id='row'><td><select name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}}</option>{% endfor %}</select></td> <td><input name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option value='{{categorie.id}}'>{{categorie.poids}}g</option>{% endfor %}</select></td><td><a type='button' onclick='jsfunction()' id='del' class='ButtonClass' >Supprimer</a></td></tr>           </tr>";
+       var html = "<tr id='row'><td><select  name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}}</option>{% endfor %}</select></td> <td><input value='1' name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option value='{{categorie.id}}'>{{categorie.poids}}g</option>{% endfor %}</select></td><td><a type='button' onclick='jsfunction()' id='del' class='ButtonClass' >Supprimer</a></td></tr>           </tr>";
      
 
         $('#tbodytab').append(html);
