@@ -40,7 +40,7 @@
               
               <tbody id="myTable">
                 {% for produit in Produits %}
-                    <tr><td>{{produit.nomProduit}}</td><td>nombre En Stock</td><td><a class="buttonClass" href="/ProduitSuppr?idProduitsuppr={{produit.id}}">Supprimer<a><a class="buttonClass2" href="/ProduitSuppr?idProduitsEdit={{produit.id}}">Modifier<a></td>
+                    <tr><td>{{produit.nomProduit}}</td><td>nombre En Stock</td><td><a class="buttonClass" href="/ProduitSuppr?idProduitsuppr={{produit.id}}">Supprimer<a><a class="buttonClass2" href="/ProduitEdit?idProduitsEdit={{produit.id}}">Modifier<a></td>
                         
                     </tr>
                     

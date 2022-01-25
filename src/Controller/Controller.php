@@ -95,18 +95,21 @@ class Controller extends AbstractController
                 $entityManager->persist($article);
                 $entityManager->persist($Commande);
                 $entityManager->flush();
-                }
+                
+                }header('Location:Accueil');die;
+        }else{
+            return $this->render('Pages/PasserCommande.html.twig',[
+                'Commande'=>$Commande,'Produits'=>$Produits,'Categories'=>$Categories
+                ,'Clients'=>$Clients
+                
+        ]
+    
+    );
         }
         
         
 
-        return $this->render('Pages/PasserCommande.html.twig',[
-            'Commande'=>$Commande,'Produits'=>$Produits,'Categories'=>$Categories
-            ,'Clients'=>$Clients
-            
-    ]
-
-);}
+       }
     /**
      * @Route("/Modif",name="Modif")
      */
@@ -363,6 +366,52 @@ class Controller extends AbstractController
         
     }
 
+
+    /**
+     * @Route("/ProduitEdit",name="ProduitEdit")
+     */
+    public function ProduitEdit(Request $request){
+        $idProduit = $request->query->get('idProduitsEdit');
+
+        
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        $Produits = $repositoryProduits->findAll();
+        $Produit = $repositoryProduits->findBy(['id'=>$idProduit]);
+
+        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class);
+        $Articles = $repositoryArticles->findAll();       
+
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Clients = $repositoryClients->findAll();   
+
+        $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
+        $Factures = $repositoryFactures->findAll();
+
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+        $Categories = $repositoryCategories->findAll();
+
+        if(isset($_GET['nom']) && isset($_GET['kgpate'])){
+        $idProduit = $_GET['idProduit'];       
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        
+        $Produit = $repositoryProduits->findBy(['id'=>$idProduit]);
+        $manager = $this->getDoctrine()->getManager();
+            $Produit[0]->setNomProduit($_GET['nom'])->setKgPateParKg($_GET['kgpate']);
+            $manager->persist($Produit[0]);
+            $manager->flush();header('Location:Produits');die;
+
+        }
+        return $this->render('Pages/ProduitEdit.html.twig',[
+                'Factures'=>$Factures,
+                'Clients'=>$Clients,
+                'Articles'=>$Articles,
+                'Produits'=>$Produits,
+                'Categories'=>$Categories,
+                'Produit'=>$Produit,
+                
+        ]
+
+    );}
     /**
      * @Route("/Produits",name="Produits")
      */

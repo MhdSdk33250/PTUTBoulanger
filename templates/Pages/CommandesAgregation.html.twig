@@ -95,6 +95,7 @@
                               {% if article.Produit is same as produit %}
                               {{article.qte}}
                               {% endif %}
+                              
                               {% endif %}
                               {% endfor %}</td>
                             {% endfor %}
@@ -190,11 +191,28 @@
                     {% endfor %}
            
                   {% endfor %}
-                           <td colspan="3">{{qtePainParRecette}}g</td>
+                           <td colspan="3">{{qtePainParRecette / 1000}}kg</td>
                 {% endfor %}
                 </tr>
-              <tr><td colspan="3"></td><td>kd pate par kg de pain</td>
+
               
+              <tr><td colspan="3"></td><td>kg pate par recette</td>
+              {% for produit in Produits %}
+
+              {% set qtePainParRecette = 0 %}
+                  {% for facture in Factures %} 
+                  
+                  {% for article in facture.Articles %}
+                    {% if article.produit is same as(produit) %}
+                     {% set qtePainParRecette = qtePainParRecette + article.categorie.poids * article.qte %}
+                    
+                    
+                    {% endif %}
+                    {% endfor %}
+           
+                  {% endfor %}
+                <td colspan="3">{{produit.KgPateParKg * qtePainParRecette / 1000}}kg</td>
+              {% endfor %}              
               
               
               </tr>
