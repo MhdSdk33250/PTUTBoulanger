@@ -20,6 +20,7 @@ class Controller extends AbstractController
      * @Route("/ArticleSuppr",name="articleSuppr")
      */
     public function ArticleSuppr(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $entityManager=$this->getDoctrine()->getManager();
         $idArticle=$_GET['idArticle'];
         $repositoryArticles = $this->getDoctrine()->getRepository(Article::class); 
@@ -45,7 +46,9 @@ class Controller extends AbstractController
      * @Route("/PasserCommande",name="PasserCommande")
      */
     public function PasserCommande(Request $request){
-
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $userObject=$this->getUser();
+        $username = $userObject->getUsername();
         //
         $entityManager=$this->getDoctrine()->getManager();
         //$idCommande = $request->query->get('idCommande');
@@ -114,7 +117,7 @@ class Controller extends AbstractController
      * @Route("/Modif",name="Modif")
      */
     public function Modif(Request $request){
-        
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $nbrArticlesApresModif=sizeof($_GET["produits"]);
         
         $idClient = $_GET['idClient'];
@@ -280,7 +283,8 @@ class Controller extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 
-
+        $userObject=$this->getUser();
+        $username = $userObject->getUsername();
         $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
         $Produits = $repositoryProduits->findAll();
 
@@ -303,6 +307,7 @@ class Controller extends AbstractController
                 'Articles'=>$Articles,
                 'Produits'=>$Produits,
                 'Categories'=>$Categories,
+                'nomUtilisateur'=>$username,
                 
         ]
 
@@ -314,8 +319,8 @@ class Controller extends AbstractController
      * @Route("/ProduitSuppr",name="ProduitSuppr")
      */
     public function ProduitSuppr(Request $request){
-
-        //
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $entityManager=$this->getDoctrine()->getManager();
         $idProduit = $request->query->get('idProduitsuppr');
         $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
@@ -334,7 +339,7 @@ class Controller extends AbstractController
      * @Route("/CommandeSuppr",name="CommandeSuppr")
      */
     public function CommandeSuppr(Request $request){
-
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         //
         $entityManager=$this->getDoctrine()->getManager();
         $idCommande = $request->query->get('CommandeSuppr');
@@ -357,7 +362,7 @@ class Controller extends AbstractController
      * @Route("/ConsulterCommande",name="ConsulterCommande")
      */
     public function ConsulterCommande(Request $request){
-
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         //
         $entityManager=$this->getDoctrine()->getManager();
         $idCommande = $request->query->get('idCommande');
@@ -388,7 +393,7 @@ class Controller extends AbstractController
      */
     public function ProduitEdit(Request $request){
         $idProduit = $request->query->get('idProduitsEdit');
-
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
         $Produits = $repositoryProduits->findAll();
@@ -432,7 +437,7 @@ class Controller extends AbstractController
      * @Route("/NouveauProduit",name="NouveauProduit")
 */
     public function NouveauProduit(Request $request){
-        
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         
         $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
@@ -476,9 +481,10 @@ class Controller extends AbstractController
      * @Route("/Produits",name="Produits")
      */
     public function Produits(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-
-
+        $userObject=$this->getUser();
+        $username = $userObject->getUsername();
         $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
         $Produits = $repositoryProduits->findAll();
 
@@ -501,6 +507,7 @@ class Controller extends AbstractController
                 'Articles'=>$Articles,
                 'Produits'=>$Produits,
                 'Categories'=>$Categories,
+                'nomUtilisateur'=>$username,
                 
         ]
 
@@ -523,9 +530,10 @@ class Controller extends AbstractController
      * @Route("/Commandes",name="Agregations des commandes")
      */
     public function CommandesAgregation(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-
-
+        $userObject=$this->getUser();
+        $username = $userObject->getUsername();
         $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
         $Produits = $repositoryProduits->findAll();
 
@@ -549,6 +557,7 @@ class Controller extends AbstractController
                 'Articles'=>$Articles,
                 'Produits'=>$Produits,
                 'Categories'=>$Categories,
+                'nomUtilisateur'=>$username,
                 
         ]
 
