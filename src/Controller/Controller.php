@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use App\Entity\Produit;
 use App\Entity\Article;
 use App\Entity\Client;
@@ -262,6 +262,22 @@ class Controller extends AbstractController
      * @Route("/Accueil",name="Accueil")
      */
     public function Accueil(){
+
+
+        //$userObject=$this->getUser();
+        //$username = $userObject->getUsername();
+        //if($username == 'mhdi.seddik@gmail.com')
+        //{
+          //  $repositoryUsers = $this->getDoctrine()->getRepository(User::class);
+            
+          // $user = $repositoryUsers->findOneBy(['email'=>$username]);
+           //$user->setRoles( array('ROLE_ADMIN') );
+           //$entityManager=$this->getDoctrine()->getManager();
+           //$entityManager->flush();
+           
+      // }
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 
 
