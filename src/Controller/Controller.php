@@ -442,7 +442,39 @@ class Controller extends AbstractController
 );
         
     }
+ /**
+     * @Route("/ClientEdit",name="ClientEdit")
+     */
+    public function ClientEdit(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+
+        if(isset($_GET['nomClient']) ){
+             
+            $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+            $numTel = $_GET['numTel'];
+            $Email = $_GET['Email'];
+            $Addresse = $_GET['Adresse'];
+            $repositoryClient= $this->getDoctrine()->getRepository(Client::class);
+            $clientId = $_GET['prodId'];
+            $Client = $repositoryClient->findOneById($clientId);
+            $manager = $this->getDoctrine()->getManager();
+                $Client->setNomClient($_GET['nomClient'])->setNumTel($numTel)->setEmail($Email)->setAdresse($Addresse);
+                
+    
+                $manager->persist($Client);
+                $manager->flush();header('Location:Clients');die;
+    
+            }
+
+        $repositoryClient= $this->getDoctrine()->getRepository(Client::class);
+        $clientId = $_GET['idClient'];
+        $Client = $repositoryClient->findOneById($clientId);
+        return $this->render('Pages/EditClient.html.twig',[
+            'Client'=>$Client,
+        ]);
+
+    }
 
     /**
      * @Route("/ProduitEdit",name="ProduitEdit")

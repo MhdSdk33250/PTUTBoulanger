@@ -53,11 +53,14 @@ function myFunction(){
     connecté sur le compte de : {{nomUtilisateur}}  </span>
 
     <div id="divrecherche">
-        <form id="formrecherche">
-           <span style="color:white"> Rechercher une commande :</span>
-        <input type="text" id="myInput" onkeyup="myFunction()">
-        <button type="submit"><i class="fa fa-times"></i></button>
-        </form>
+       
+
+
+
+<center><button class="buttonClass2" id='Imprimer' onclick="myFunction()" >Imprimer la table</button></center>
+
+
+
 
 
     </div>
@@ -254,7 +257,7 @@ function myFunction(){
               </tr>
   <tr><td>Agregation des factures</td></tr>
             </table>
-            <button id='Imprimer' onclick="myFunction()" >Imprimer la table</button>
+            
 </div>
 
 {% endblock body %}
