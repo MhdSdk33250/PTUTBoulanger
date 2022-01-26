@@ -22,7 +22,7 @@
         <input type="text" id="myInput" onkeyup="myFunction()">
         <button type="submit"><i class="fa fa-times"></i></button>
         </form>
-        <center><a href='PasserCommande'  class='buttonClassVote'>Nouveau produit</a></center>
+        <center><a href='NouveauProduit'  class='buttonClassVote'>Nouveau produit</a></center>
 
 
     </div>
@@ -33,7 +33,7 @@
               
                 <tr id="Sticky">
                     <td>Intitulé</td>
-                    <td>Qte en stock</td>
+                    <td>kg de pate pour 1 kg de pain</td>
                     <td>Action<td>
                     
 
@@ -41,7 +41,7 @@
               
               <tbody id="myTable">
                 {% for produit in Produits %}
-                    <tr><td>{{produit.nomProduit}}</td><td>nombre En Stock</td><td><a class="buttonClass" href="/ProduitSuppr?idProduitsuppr={{produit.id}}">Supprimer<a><a class="buttonClass2" href="/ProduitEdit?idProduitsEdit={{produit.id}}">Modifier<a></td>
+                    <tr><td>{{produit.nomProduit}}</td><td>{{produit.KgPateParKg}}kg</td><td><a class="buttonClass" href="/ProduitSuppr?idProduitsuppr={{produit.id}}">Supprimer<a><a class="buttonClass2" href="/ProduitEdit?idProduitsEdit={{produit.id}}">Modifier<a></td>
                         
                     </tr>
                     

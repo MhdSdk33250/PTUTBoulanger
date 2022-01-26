@@ -413,6 +413,50 @@ class Controller extends AbstractController
 
     );}
     /**
+     * @Route("/NouveauProduit",name="NouveauProduit")
+*/
+    public function NouveauProduit(Request $request){
+        
+
+        
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        $Produits = $repositoryProduits->findAll();
+        
+
+        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class);
+        $Articles = $repositoryArticles->findAll();       
+
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Clients = $repositoryClients->findAll();   
+
+        $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
+        $Factures = $repositoryFactures->findAll();
+
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+        $Categories = $repositoryCategories->findAll();
+
+        if(isset($_GET['nom']) && isset($_GET['kgpate'])){
+             
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        
+        $Produit = new Produit();
+        $manager = $this->getDoctrine()->getManager();
+            $Produit->setNomProduit($_GET['nom'])->setKgPateParKg($_GET['kgpate'])->setPrixUnitaire(0);
+            $manager->persist($Produit);
+            $manager->flush();header('Location:Produits');die;
+
+        }
+        return $this->render('Pages/ProduitAjout.html.twig',[
+                'Factures'=>$Factures,
+                'Clients'=>$Clients,
+                'Articles'=>$Articles,
+                'Produits'=>$Produits,
+                'Categories'=>$Categories,
+                       
+        ]
+
+    );}
+    /**
      * @Route("/Produits",name="Produits")
      */
     public function Produits(){
