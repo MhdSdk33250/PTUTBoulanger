@@ -35,6 +35,11 @@ class Facture
      */
     private $Articles;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $Total;
+
     public function __construct()
     {
         $this->Articles = new ArrayCollection();
@@ -96,6 +101,18 @@ class Facture
                 $article->setFacture(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->Total;
+    }
+
+    public function setTotal(?float $Total): self
+    {
+        $this->Total = round($Total, 2);
 
         return $this;
     }

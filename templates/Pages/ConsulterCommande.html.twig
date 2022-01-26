@@ -7,7 +7,7 @@
 
 <ul>
 <li><a  href="Accueil">Retour a l'accueil</a></li>
-
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <li id="profilDD" style="float:right; cursor:pointer;"> 
   <div id="dropDownUsr">
@@ -32,31 +32,32 @@
               
                 <tr  id="Sticky">
                     <td colspan="2" ></td>
-                    <td colspan="3"></td>
+                    <td colspan="4"></td>
                     
                     </tr>
               
 
-            <tr><td colspan="3">Id commande</td><td><input readonly  name="idCommande" style="font-size:20px;" value="{{Commande.id}}"></td></tr>
-            <tr><td colspan="3">Client</td><td><select name="idClient" style="font-size:20px;"> 
+            <tr><td colspan="4">Id commande</td><td><input readonly  name="idCommande" style="font-size:20px;" value="{{Commande.id}}"></td></tr>
+            <tr><td colspan="4">Client</td><td><select name="idClient" style="font-size:20px;"> 
             {% for client in Clients %}
               <option {% if client.id == Commande.client.id %}  {{" selected "}} {% endif %} value="{{client.id}}">{{client.nomClient}} </option>
             {% endfor %}
             
             </select></td></tr>
-             <tr><td colspan="3">date de livraison</td><td><input name="date" type="date" style="font-size:20px;" value="{{Commande.date |date("Y-m-d")}}"></td></tr>
+             <tr><td colspan="4">date de livraison</td><td><input name="date" type="date" style="font-size:20px;" value="{{Commande.date |date("Y-m-d")}}"></td></tr>
             <tr  id="Sticky">
                     <td >Articles</td>
                     <td >quantité</td>
                     <td >Poids</td>
-                    <td >action</td>
+                    <td>prix</td>
+                    <td colspan='2' >action</td>
                     </tr><tbody id="tbodytab">
                 {% for article in Commande.articles %}
 
             <tr><td ><select name="produits[]" id="produitselected">
             
             {% for produitoption in Produits %}
-                <option {% if article.produit.id == produitoption.id %} {{" selected "}} {% endif %} value="{{produitoption.id}}">{{produitoption.nomProduit}}</option>
+                <option {% if article.produit.id == produitoption.id %} {{" selected "}} {% endif %} value="{{produitoption.id}}">{{produitoption.nomProduit}}  ({{produitoption.prixUnitaire}}€ / kg)</option>
                 
             {% endfor %}
             </select></td> <td><input name="qte[]" type="number" value="{{article.qte}}"></td><td>
@@ -71,22 +72,26 @@
             
             
             </td>
+            <td>{{article.total}}€</td>
             <td><a class="buttonClass" href="/ArticleSuppr?idCommande={{Commande.id}}&idArticle={{article.id}}">Supprimer</a></td></tr>
             {% endfor %}
             
             </tbody>
-            <td></td><td colspan="2"><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder">
-            <td colspan="2"><a  class='ButtonClass2' name="add" id="add" >Ajouter un article</a></td>
+            <tr><td></td><td></td><td>prix total = <td>{{Commande.Total}}€</td><td></td><tr>
+            <td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder">
+            <td><a href='Facture' class="buttonClass2" id='Imprimer'  >facture</a></td><td colspan="2"><a  class='ButtonClass2' name="add" id="add" >Ajouter un article</a></td>
             
             </table>
+            
   
   </form>
   {% block javascript %}
+
   <script type="text/javascript">
     // add row
     $("#add").click(function () {
       console.log('test');
-       var html = "<tr id='row'><td><select name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}}</option>{% endfor %}</select></td> <td><input value='1' name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option value='{{categorie.id}}'>{{categorie.poids}}g</option>{% endfor %}</select></td><td><a type='button' onclick='jsfunction()' id='del' class='ButtonClass' >Supprimer</a></td></tr>           </tr>";
+       var html = "<tr id='row'><td><select name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}} / ({{produitoption.prixUnitaire}}€ / kg)</option>{% endfor %}</select></td> <td><input value='1' name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option value='{{categorie.id}}'>{{categorie.poids}}g</option>{% endfor %}</select></td><td>sauvegardez pour calculer</td><td><a type='button' onclick='jsfunction()' id='del' class='ButtonClass' >Supprimer</a></td></tr>           </tr>";
      
 
         $('#tbodytab').append(html);
@@ -97,7 +102,19 @@
         $(this).closest('#row').remove();
     });
 
+    $(document).on('click', '#Imprimer', function () {
+      
+        console.log('debug');
+    });
+
 
 </script>
+
+
+
+
+
 {% endblock %}
+
+
 {% endblock body %}

@@ -25,7 +25,7 @@ class Article
     private $qte = 0;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $total;
 
@@ -69,14 +69,15 @@ class Article
         return $this;
     }
 
-    public function getTotal(): ?int
+    public function getTotal(): ?float
     {
         return $this->total;
     }
 
-    public function setTotal(int $total): self
+    public function setTotal(float $total): self
     {
-        $this->total = $total;
+        
+        $this->total =round($total, 2);
 
         return $this;
     }

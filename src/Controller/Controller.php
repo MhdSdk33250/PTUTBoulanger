@@ -115,6 +115,7 @@ class Controller extends AbstractController
                 $article = new Article();
                 
                 
+
                 $idProduit = $_GET["produits"][$i];
                 $qteArticle = $_GET["qte"][$i];
                 $idCategorieArticle = $_GET["Poids"][$i];
@@ -127,8 +128,21 @@ class Controller extends AbstractController
                 $Commande->addArticle($article);
                 $article->setProduit($Produit);
                 $article->setQte($qteArticle);
-                $article->setTotal(0);
                 $article->setCategorie($Categorie);
+                echo "Calcul : ".$article->getQte()."x".($article->getCategorie()->getPoids() / 1000)."x".$article->getProduit()->getPrixUnitaire();
+                $total = $article->getQte() * ($article->getCategorie()->getPoids() / 1000) * $article->getProduit()->getPrixUnitaire();
+                echo "<br> calculé : ".$total;
+                $article->setTotal($total);
+                
+                
+
+
+
+                $total = 0;
+                foreach($Commande->getArticles()  as $article){
+                $total = $total + $article->getTotal();
+                }
+                $Commande->setTotal($total);
                 $entityManager->persist($article);
                 $entityManager->persist($Commande);
                 $entityManager->flush();
@@ -179,7 +193,7 @@ class Controller extends AbstractController
             $idProduit = $_GET["produits"][$i];
             $qteArticle = $_GET["qte"][$i];
             $idCategorieArticle = $_GET["Poids"][$i];
-
+            
             $articleVerifRedondance[$i][] = $idProduit;
             
             $articleVerifRedondance[$i][] = $idCategorieArticle;
@@ -220,6 +234,8 @@ class Controller extends AbstractController
             $articles[$i]->setProduit($Produit);
             $articles[$i]->setQte($qteArticle);
             $articles[$i]->setCategorie($Categorie);
+            $total = $article->getQte() * ($article->getCategorie()->getPoids() / 1000);$total = $total * $article->getProduit()->getPrixUnitaire();
+            $article->setTotal($total);
             
             
             $articleVerifRedondance[] = $articles[$i];
@@ -246,7 +262,8 @@ class Controller extends AbstractController
             $articles[$j]->setProduit($Produit);
             $articles[$j]->setQte($qteArticle);
             $articles[$j]->setCategorie($Categorie);
-            $articles[$j]->setTotal("0")
+            $total = $articles[$j]->getQte() * ($articles[$j]->getCategorie()->getPoids() / 1000);$total = $total * $articles[$j]->getProduit()->getPrixUnitaire();
+            $articles[$j]->setTotal($total)
             ->setFacture($Commande);
             
             
@@ -260,16 +277,17 @@ class Controller extends AbstractController
             //LIER LOBJET A LA BD
             //PERSIST ET FLUSH LOBJET!!!
             
-        }
+        }$total = 0;
         foreach($Commande->getArticles()  as $article){
-            echo $article->getQte();
+            $total = $total + $article->getTotal();
         }
+        $Commande->setTotal($total);
         
         
         
 
         
-
+        
         
         $manager->persist($Client);
         
@@ -346,7 +364,7 @@ class Controller extends AbstractController
            //$entityManager->flush();
            
       // }
-
+            
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 
