@@ -65,7 +65,7 @@
             
             
             {% for categorie in Categories %}
-            <option {% if categorie.id == article.categorie.id %} {{" selected "}} {% endif %} value="{{categorie.id}}">{{categorie.poids}}g</option>
+            <option {% if categorie.id == article.categorie.id %} {{" selected "}} {% endif %} value="{{categorie.id}}">{{categorie.poids/1000}}kg</option>
             {% endfor %}
 
             </select>
@@ -79,7 +79,7 @@
             </tbody>
             <tr><td></td><td></td><td>prix total = <td>{{Commande.Total}}€</td><td></td><tr>
             <td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder">
-            <td><a href='Facture' class="buttonClass2" id='Imprimer'  >facture</a></td><td colspan="2"><a  class='ButtonClass2' name="add" id="add" >Ajouter un article</a></td>
+            <td><a href='Facture?idCommande={{Commande.id}}' class="buttonClass2" id='Imprimer'  >facture</a></td><td colspan="2"><a  class='ButtonClass2' name="add" id="add" >Ajouter un article</a></td>
             
             </table>
             
@@ -91,7 +91,7 @@
     // add row
     $("#add").click(function () {
       console.log('test');
-       var html = "<tr id='row'><td><select name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}} / ({{produitoption.prixUnitaire}}€ / kg)</option>{% endfor %}</select></td> <td><input value='1' name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option value='{{categorie.id}}'>{{categorie.poids}}g</option>{% endfor %}</select></td><td>sauvegardez pour calculer</td><td><a type='button' onclick='jsfunction()' id='del' class='ButtonClass' >Supprimer</a></td></tr>           </tr>";
+       var html = "<tr id='row'><td><select name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}} / ({{produitoption.prixUnitaire}}€ / kg)</option>{% endfor %}</select></td> <td><input value='1' name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option value='{{categorie.id}}'>{{categorie.poids/1000}}kg</option>{% endfor %}</select></td><td>sauvegardez pour calculer</td><td><a type='button' onclick='jsfunction()' id='del' class='ButtonClass' >Supprimer</a></td></tr>           </tr>";
      
 
         $('#tbodytab').append(html);

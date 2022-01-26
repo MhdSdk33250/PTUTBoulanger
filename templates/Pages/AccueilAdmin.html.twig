@@ -34,7 +34,7 @@
                 <tr id="Sticky">
                     <td>facture n°</td>
                     <td>Client</td>
-                    <td>Date</td>
+                    <td>Date de livraison</td>
                     <td>total Articles</td>
                     <td>Action</td>
     </tr>
@@ -57,8 +57,8 @@
                             {{qteTotalArticles}}
                             
                             </td>
-                             <td><a onclick="checker()" class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{facture.id}}">Supprimer<a><a class="buttonClass2" href="/ConsulterCommande?idCommande={{facture.id}}">Modifier<a>
-                             <a href="Ticket?idFacture={{facture.id}} " class="buttonClass2">Ticket</td>
+                             <td><a onclick="checker()" class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{facture.id}}">Supprimer<a><a class="buttonClass2" href="/ConsulterCommande?idCommande={{facture.id}}">Modifier<a><a class="buttonClass2" href="/Facture?idCommande={{facture.id}}">Facture<a>
+                             
                             
                            
                             

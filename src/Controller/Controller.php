@@ -17,12 +17,20 @@ class Controller extends AbstractController
 {
     
     /**
-     * @Route("/Ticket",name="Ticket")
+     * @Route("/Facture",name="Facture")
      */
-    public function Ticket(Request $request){
-        $repositoryClient = $this->getDoctrine()->getRepository(Client::class); 
-        $Client = $repositoryClient->findOneBy(['id'=>$idClient]);
-        return $this->redirectToRoute("Accueil");
+    public function Facture(Request $request){
+        $repositoryFacture = $this->getDoctrine()->getRepository(Facture::class); 
+        $Facture = $repositoryFacture->findOneBy(['id'=>$_GET['idCommande']]);
+        
+
+
+        return $this->render('Pages/Facture.html.twig',[
+                'Facture'=>$Facture,
+                
+        ]
+    
+    );
 
 
     }

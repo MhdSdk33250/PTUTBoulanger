@@ -1,0 +1,173 @@
+
+{% block body %}
+
+<script>
+
+function myFunction(){
+  html2canvas(document.getElementById('aImprimer')).then(function(canvas) {
+    var dataUrl = canvas.toDataURL(); //attempt to save base64 string to server using this var  
+    var windowContent = '<!DOCTYPE html>';
+    windowContent += '<html>'
+    windowContent += '<head><title>Facture{{Facture.id}}</title></head>';
+    windowContent += '<body>'
+    windowContent += '<img src="' + dataUrl + '">';
+    windowContent += '</body>';
+    windowContent += '</html>';
+    var printWin = window.open("","","width=900","height=700");
+    printWin.document.open();
+    printWin.document.write(windowContent);
+    printWin.document.close();
+    printWin.focus();
+    printWin.print();
+    printwin.onafterprint = window.close;	
+    
+});
+}
+//function myFunction(){
+
+  //var printme = document.getElementById('styled-table');
+  //var wme = window.open("","","width=900","height=700");
+  //wme.document.write(printme.outerHTML);
+  //wme.document.close();
+  //wme.focus();
+  //wme.print();
+  
+
+//}
+
+</script>
+<link rel="stylesheet" href="./Style.min.css">
+<header>
+<nav id="navbar">
+
+<ul>
+<li><a  href="Accueil">Retour a l'accueil</a></li>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <li id="profilDD" style="float:right; cursor:pointer;"> 
+  <div id="dropDownUsr">
+
+    <a href="logout">Deconnexion</a>
+  </div>
+  <a>  Profil </a>
+</li>
+</ul>
+
+
+</nav>
+
+</header>
+
+
+<div id="ContainerFacture">
+
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='https://www.w3.org/1999/xhtml'>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<body style='font-family:Tahoma;font-size:12px;color: #333333;background-color:#FFFFFF;'>
+<table id="aImprimer" align='center' border='0' cellpadding='0' cellspacing='0' style='margin:auto;height:842px; width:595px;font-size:12px;'>
+  
+  <tr>
+    <td valign='top'><table width='100%' cellspacing='0' cellpadding='0'>
+        <tr>
+          <td valign='bottom' width='50%' height='50'><div align='left'><img src='https://www.inv24.com/components/Users/pics/58cd70c222196/thumbs/0.jpg' /></div><br /></td>
+
+          <td width='50%'>&nbsp;</td>
+        </tr>
+      </table>Destinataire: <br/><br/>
+      <table width='100%' cellspacing='0' cellpadding='0'>
+      <tr>
+        <td valign='top' width='35%' style='font-size:12px;'> <strong >{{Facture.client.nomClient}}</strong><br /> 
+{{Facture.client.Adresse}}<br/>
+{{Facture.client.Adresse}}<br/>
+{{Facture.client.numTel}}<br/><br /><br />
+
+</td>
+        <td valign='top' width='35%'>
+</td>
+        <td valign='top' width='30%' style='font-size:12px;'>Date de livraison: {{Facture.date|date("d/m/Y")}}<br/>
+		<br/>
+		
+		
+		</td>
+
+      </tr>
+    </table>
+    <table width='100%' height='100' cellspacing='0' cellpadding='0'>
+      <tr>
+        <td><div align='center' style='font-size: 14px;font-weight: bold;'>Facture №  {{Facture.id}} </div></td>
+      </tr>
+    </table>
+<table width='100%' cellspacing='0' cellpadding='2' border='1' bordercolor='#CCCCCC'>
+      <tr>
+
+        <td width='35%' bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Désignation </strong></td>
+        <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Quantité</strong></td>
+        <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Prix</strong></td>
+        <td bordercolor='#ccc' bgcolor='#f2f2f2' style='font-size:12px;'><strong>Total</strong></td>
+  
+        </tr>
+      
+{% for article in Facture.articles %}
+<tr style="display:none;"><td colspan="*"><tr>
+
+<td valign='top' style='font-size:12px;'>{{article.produit.nomProduit}} ({{article.Categorie.poids /1000}}kg)</td>
+<td valign='top' style='font-size:12px;'>{{article.qte}} </td>
+<td valign='top' style='font-size:12px;'>{{article.Produit.prixUnitaire}}€/kg</td>
+<td valign='top' style='font-size:12px;'>{{article.total}}€</td>
+
+</tr>
+{% endfor %}
+
+    </table>
+<table width='100%' cellspacing='0' cellpadding='2' border='0'>
+      <tr>
+        <td style='font-size:12px;width:50%;'><strong> </strong></td>
+        <td><table width='100%' cellspacing='0' cellpadding='2' border='0'>
+  <tr>
+<td align='right' style='font-size:12px;' >Total</td>
+    <td  align='right' style='font-size:12px;'>{{Facture.total}}€<td>
+  </tr>
+  <tr>
+
+    <td  align='right' style='font-size:12px;'><b>Total TTC</b></td>
+    <td  align='right' style='font-size:12px;'><b>{{Facture.total}}€</b></td>
+  </tr></table>
+</td>
+      </tr>
+</table> 
+   
+   <table width='100%' height='50'><tr><td style='font-size:12px;text-align:justify;'>TVA non applicable, article 293B du code général des impôts</td></tr></table>
+    <table  width='100%' cellspacing='0' cellpadding='2'>
+      <tr>
+        <td width='33%' style='border-top:double medium #CCCCCC;font-size:12px;' valign='top' ><b>Boulanger</b><br/>
+<br/>
+
+</td>
+        <td width='33%' style='border-top:double medium #CCCCCC; font-size:12px;' align='center' valign='top'>
+[Adresse de la boulangerie] <br/>
+Tél: [Téléphone]<br/>
+</td>
+
+        <td valign='top' width='34%' style='border-top:double medium #CCCCCC;font-size:12px;' align='right'>[Nom de la banque]<br/> [Compte bancaire (IBAN)]  <br/><br/>     
+ </td>
+      </tr>
+    </table>
+    
+</td>
+  </tr>
+</table>
+<a class="buttonClass2" id='Imprimer' onclick="myFunction()" >Imprimer la table</a>
+</body>
+</html>
+
+</div>
+
+
+
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+{% endblock body %}
