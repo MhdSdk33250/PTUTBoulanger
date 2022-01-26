@@ -15,6 +15,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Controller extends AbstractController
 {
+    
+    /**
+     * @Route("/Ticket",name="Ticket")
+     */
+    public function Ticket(Request $request){
+        $repositoryClient = $this->getDoctrine()->getRepository(Client::class); 
+        $Client = $repositoryClient->findOneBy(['id'=>$idClient]);
+        return $this->redirectToRoute("Accueil");
+
+
+    }
  /**
      * @Route("/ClientSuppr",name="ClientSuppr")
      */
