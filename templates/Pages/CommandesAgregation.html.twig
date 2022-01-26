@@ -11,7 +11,43 @@
 {% block body %}
 <div id="flex">
 
+<script>
 
+function myFunction(){
+  html2canvas(document.getElementById('styled-table')).then(function(canvas) {
+    var dataUrl = canvas.toDataURL(); //attempt to save base64 string to server using this var  
+    var windowContent = '<!DOCTYPE html>';
+    windowContent += '<html>'
+    windowContent += '<head><title>Print canvas</title></head>';
+    windowContent += '<body>'
+    windowContent += '<img src="' + dataUrl + '">';
+    windowContent += '</body>';
+    windowContent += '</html>';
+    var printWin = window.open("","","width=900","height=700");
+    printWin.document.open();
+    printWin.document.write(windowContent);
+    printWin.document.close();
+    printWin.focus();
+    printWin.print();
+    
+});
+}
+//function myFunction(){
+
+  //var printme = document.getElementById('styled-table');
+  //var wme = window.open("","","width=900","height=700");
+  //wme.document.write(printme.outerHTML);
+  //wme.document.close();
+  //wme.focus();
+  //wme.print();
+  
+
+//}
+
+</script>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <div class="containermenu" id="flexcontainermenu">
     <span style="color:white; margin-top:10px; margin-left:10px;">
     connecté sur le compte de : ~    </span>
@@ -28,7 +64,7 @@
     </div>
 <div id="DivAgregation">
 
-<table class="styled-table">
+<table id="styled-table" class="styled-table">
               
                 <tr id="Sticky">
                     <td>facture n°</td>
@@ -216,8 +252,9 @@
               
               
               </tr>
-
+  <tr><td>Agregation des factures</td></tr>
             </table>
+            <button id='Imprimer' onclick="myFunction()" >Imprimer la table</button>
 </div>
 
 {% endblock body %}
