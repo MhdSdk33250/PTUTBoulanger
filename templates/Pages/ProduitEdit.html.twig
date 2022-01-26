@@ -12,7 +12,7 @@
   <li id="profilDD" style="float:right; cursor:pointer;"> 
   <div id="dropDownUsr">
 
-    <a href="./Autre/Deconnexion.php">Deconnexion</a>
+    <a href="logout">Deconnexion</a>
   </div>
   <a>  Profil </a>
 </li>
@@ -30,12 +30,13 @@
 <form action="ProduitEdit">
 <table style="width:1000px;margin:auto;" class="styled-table">
             
-            <tr><td>nom</td><td>kg de Pate Par Kg de pain</td></tr>
-            
-            <tr><td><input value="{{Produit[0].nomProduit}}" name="nom" type="text" style="font-size:20px;" ></td><td><input value="{{Produit[0].kgPateParKg}}" name="kgpate" type="float" style="font-size:20px;" ></td></tr>
-            <td>id produit : <input readonly name="idProduit" value="{{Produit[0].id}}"></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder">
             
             
+            <tr><td>nom : <input value="{{Produit[0].nomProduit}}" name="nom" type="text" style="font-size:20px;" ></td><td>kg pate/kg pain : <input value="{{Produit[0].kgPateParKg}}" name="kgpate" type="number" step="0.01" style="font-size:20px;" ></td></tr>
+          
+           <tr> <td>ID produit : <input readonly name="idProduit" value="{{Produit[0].id}}"></td><td>Prix au kg : <input value="{{Produit[0].prixUnitaire}}" name="prixKg" type="number" step="0.01" style="font-size:20px;" ></td></tr>
+            
+            <tr><td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder"></td></tr>
             </table>
   
   </form>

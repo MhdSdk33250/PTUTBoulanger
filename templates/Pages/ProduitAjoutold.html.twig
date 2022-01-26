@@ -1,0 +1,61 @@
+
+{% block body %}
+
+<link rel="stylesheet" href="./Style.min.css">
+<header>
+<nav id="navbar">
+
+<ul>
+<li><a  href="Accueil">Retour a l'accueil</a></li>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <li id="profilDD" style="float:right; cursor:pointer;"> 
+  <div id="dropDownUsr">
+
+    <a href="logout">Deconnexion</a>
+  </div>
+  <a>  Profil </a>
+</li>
+</ul>
+
+
+</nav>
+
+</header>
+
+
+
+
+
+<form action="NouveauProduit">
+<table style="width:1000px;margin:auto;" class="styled-table">
+            
+            <tr><td>nom</td><td>kg de Pate Par Kg de pain</td></tr>
+            
+            <tr><td><input name="nom" type="text" style="font-size:20px;" ></td><td><input  name="kgpate" type="float" style="font-size:20px;" ></td></tr>
+            <td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder">
+            
+            
+            </table>
+  
+  </form>
+  {% block javascript %}
+  <script type="text/javascript">
+    // add row
+    $("#add").click(function () {
+      console.log('test');
+       var html = "<tr id='row'><td><select name='produits[]' id='produitselected'>{% for produitoption in Produits %}<option value='{{produitoption.id}}'>{{produitoption.nomProduit}}</option>{% endfor %}</select></td> <td><input value='1' name='qte[]' type='number'></td><td><select name='Poids[]' id='poidsselected'>{% for categorie in Categories %}<option>{{categorie.poids}}g</option>{% endfor %}</select></td><td><a type='button' onclick='jsfunction()' id='del' class='ButtonClass' >Supprimer</a></td></tr>           </tr>";
+     
+
+        $('#tbodytab').append(html);
+    });
+    
+    $(document).on('click', '#del', function () {
+      
+        $(this).closest('#row').remove();
+    });
+
+
+</script>
+{% endblock %}
+{% endblock body %}

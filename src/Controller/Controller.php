@@ -260,7 +260,40 @@ class Controller extends AbstractController
         return $this->redirectToRoute("ConsulterCommande",['idCommande'=>$idCommande]);
     
     }
+ /**
+     * @Route("/Clients",name="Clients")
+     */
+    public function Clients(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+
+        $userObject=$this->getUser();
+        $username = $userObject->getUsername();
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        $Produits = $repositoryProduits->findAll();
+
+        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class);
+        $Articles = $repositoryArticles->findAll();       
+
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Clients = $repositoryClients->findAll();   
+
+        $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
+        $Factures = $repositoryFactures->findAll();
+
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+        $Categories = $repositoryCategories->findAll();
+ return $this->render('Pages/Clients.html.twig',[
+                'Factures'=>$Factures,
+                'Clients'=>$Clients,
+                'Articles'=>$Articles,
+                'Produits'=>$Produits,
+                'Categories'=>$Categories,
+                'nomUtilisateur'=>$username,
+                
+ ]);
+
+    }
     /**
      * @Route("/Accueil",name="Accueil")
      */
@@ -417,7 +450,7 @@ class Controller extends AbstractController
         
         $Produit = $repositoryProduits->findBy(['id'=>$idProduit]);
         $manager = $this->getDoctrine()->getManager();
-            $Produit[0]->setNomProduit($_GET['nom'])->setKgPateParKg($_GET['kgpate']);
+            $Produit[0]->setNomProduit($_GET['nom'])->setKgPateParKg($_GET['kgpate'])->setPrixUnitaire($_GET['prixKg']);
             $manager->persist($Produit[0]);
             $manager->flush();header('Location:Produits');die;
 
@@ -433,6 +466,27 @@ class Controller extends AbstractController
         ]
 
     );}
+
+    /**
+     * @Route("/NouveauClient",name="NouveauClient")
+    */
+public function NouveauClient(Request $request){
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    
+    return $this->render('Pages/ProduitEdit.html.twig',[
+        'Factures'=>$Factures,
+        'Clients'=>$Clients,
+        'Articles'=>$Articles,
+        'Produits'=>$Produits,
+        'Categories'=>$Categories,
+        
+        
+]
+
+);
+
+
+}
     /**
      * @Route("/NouveauProduit",name="NouveauProduit")
 */
@@ -462,7 +516,7 @@ class Controller extends AbstractController
         
         $Produit = new Produit();
         $manager = $this->getDoctrine()->getManager();
-            $Produit->setNomProduit($_GET['nom'])->setKgPateParKg($_GET['kgpate'])->setPrixUnitaire(0);
+            $Produit->setNomProduit($_GET['nom'])->setKgPateParKg($_GET['kgpate'])->setPrixUnitaire($_GET['prixKg']);
             $manager->persist($Produit);
             $manager->flush();header('Location:Produits');die;
 

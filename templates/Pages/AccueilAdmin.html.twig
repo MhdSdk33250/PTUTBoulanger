@@ -57,7 +57,7 @@
                             {{qteTotalArticles}}
                             
                             </td>
-                             <td><a class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{facture.id}}">Supprimer<a><a class="buttonClass2" href="/ConsulterCommande?idCommande={{facture.id}}">Consulter<a></td>
+                             <td><a onclick="checker()" class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{facture.id}}">Supprimer<a><a class="buttonClass2" href="/ConsulterCommande?idCommande={{facture.id}}">Consulter<a></td>
                             
                            
                             
@@ -98,5 +98,13 @@ function myFunction() {
   }
 }
 </script>
-
+<script>
+    function checker(){
+        console.log('test');
+        var result = confirm('Cette commande sera supprimé, êtes vous sur ?');
+        if(result == false){
+            event.preventDefault();
+        }
+    }
+</script>
 {% endblock body %}

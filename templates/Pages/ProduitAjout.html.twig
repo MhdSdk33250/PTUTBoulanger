@@ -6,13 +6,13 @@
 <nav id="navbar">
 
 <ul>
-<li><a  href="Accueil">Retour a l'accueil</a></li>
+<li><a  href="Produits">Retour a l'accueil</a></li>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <li id="profilDD" style="float:right; cursor:pointer;"> 
   <div id="dropDownUsr">
 
-    <a href="./Autre/Deconnexion.php">Deconnexion</a>
+    <a href="logout">Deconnexion</a>
   </div>
   <a>  Profil </a>
 </li>
@@ -30,12 +30,13 @@
 <form action="NouveauProduit">
 <table style="width:1000px;margin:auto;" class="styled-table">
             
-            <tr><td>nom</td><td>kg de Pate Par Kg de pain</td></tr>
-            
-            <tr><td><input name="nom" type="text" style="font-size:20px;" ></td><td><input  name="kgpate" type="float" style="font-size:20px;" ></td></tr>
-            <td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder">
             
             
+            <tr><td>nom : <input  name="nom" type="text" style="font-size:20px;" ></td><td>kg pate/kg pain : <input name="kgpate" type="number" step="0.01" style="font-size:20px;" ></td></tr>
+          
+           <tr> <td></td><td>Prix au kg : <input  name="prixKg" type="number" step="0.01" style="font-size:20px;" ></td></tr>
+            
+            <tr><td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder"></td></tr>
             </table>
   
   </form>
