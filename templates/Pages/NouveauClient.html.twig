@@ -1,0 +1,46 @@
+
+{% block body %}
+
+<link rel="stylesheet" href="./Style.min.css">
+<header>
+<nav id="navbar">
+
+<ul>
+<li><a  href="Clients">Retour a l'accueil</a></li>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <li id="profilDD" style="float:right; cursor:pointer;"> 
+  <div id="dropDownUsr">
+
+    <a href="logout">Deconnexion</a>
+  </div>
+  <a>  Profil </a>
+</li>
+</ul>
+
+
+</nav>
+
+</header>
+
+
+
+
+
+<form action="NouveauClient">
+<table style="width:1000px;margin:auto;" class="styled-table">
+            
+            
+            
+            <tr><td>nom Client : <input  name="nomClient" type="text" style="font-size:20px;" ></td><td>numero telephone : <input name="numTel" type="text" style="font-size:20px;" ></td></tr>
+          
+           <tr> <td>E-mail : <input type="text" name="Email" ></td><td>Adresse : <input type="text" name="Adresse" ></td></tr>
+            
+            <tr><td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder"></td></tr>
+            </table>
+  
+  </form>
+  {% block javascript %}
+
+{% endblock %}
+{% endblock body %}

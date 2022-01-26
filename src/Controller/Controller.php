@@ -15,7 +15,30 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Controller extends AbstractController
 {
+ /**
+     * @Route("/ClientSuppr",name="ClientSuppr")
+     */
+    public function ClientSuppr(Request $request){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $entityManager=$this->getDoctrine()->getManager();
+        $idClient=$_GET['idClient'];
+        
+        $repositoryClient = $this->getDoctrine()->getRepository(Client::class); 
+        $Client = $repositoryClient->findOneBy(['id'=>$idClient]);
+        foreach($Client->getFactures() as $facture){
 
+            foreach($facture->getArticles() as $f){
+                $entityManager->remove($f);
+            $entityManager->flush();
+            }
+            $entityManager->remove($facture);
+            $entityManager->flush();
+        }
+        $entityManager->remove($Client);
+        $entityManager->flush();
+        return $this->redirectToRoute("Clients");
+
+    }
     /**
      * @Route("/ArticleSuppr",name="articleSuppr")
      */
@@ -472,16 +495,26 @@ class Controller extends AbstractController
     */
 public function NouveauClient(Request $request){
     $this->denyAccessUnlessGranted('ROLE_ADMIN');
-    
-    return $this->render('Pages/ProduitEdit.html.twig',[
-        'Factures'=>$Factures,
-        'Clients'=>$Clients,
-        'Articles'=>$Articles,
-        'Produits'=>$Produits,
-        'Categories'=>$Categories,
-        
-        
-]
+    if(isset($_GET['nomClient']) ){
+             
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $numTel = $_GET['numTel'];
+        $Email = $_GET['Email'];
+        $Addresse = $_GET['Adresse'];
+
+        $Client = new Client();
+        $manager = $this->getDoctrine()->getManager();
+            $Client->setNomClient($_GET['nomClient'])->setNumTel($numTel)->setEmail($Email)->setAdresse($Addresse);
+            
+
+            $manager->persist($Client);
+            $manager->flush();header('Location:Clients');die;
+
+        }
+
+
+
+    return $this->render('Pages/NouveauClient.html.twig',[]
 
 );
 

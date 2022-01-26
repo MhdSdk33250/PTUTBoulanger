@@ -43,7 +43,12 @@
               
               <tbody id="myTable">
                 {% for client in Clients %}
-                    <tr><td>{{client.nomClient}}</td><td>{{client.numTel}}</td><td>{{client.email}}</td></tr>  
+                    <tr><td>{{client.nomClient}}</td>
+                    <td>{{client.numTel}}</td>
+                    <td>{{client.email}}</td>
+                    <td><a class="buttonClass" href="/ClientSuppr?idClient={{client.id}}">Supprimer<a>
+                    <a class="buttonClass2" href="/ClientEdit?idClient={{client.id}}">Modifier<a></td>
+                    </tr>  
                     
                     
                 {% endfor %}
