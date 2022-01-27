@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 class Controller extends AbstractController
@@ -155,7 +157,7 @@ class Controller extends AbstractController
                 $entityManager->persist($Commande);
                 $entityManager->flush();
                 
-                }header('Location:Accueil');die;
+                }header('Location:ConsulterCommande?idCommande='.$Commande->getId());die;
         }else{
             return $this->render('Pages/PasserCommande.html.twig',[
                 'Commande'=>$Commande,'Produits'=>$Produits,'Categories'=>$Categories
@@ -393,7 +395,7 @@ class Controller extends AbstractController
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
 
-
+            
         return $this->render('Pages/AccueilAdmin.html.twig',[
                 'Factures'=>$Factures,
                 'Clients'=>$Clients,
@@ -701,17 +703,31 @@ public function NouveauClient(Request $request){
 
         $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
         $Factures = $repositoryFactures->findAll();
-
+        $entityManager=$this->getDoctrine()->getManager();
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
-
-
-
+        foreach($Produits as $produit){
+            
+            $metadata = $entityManager->getClassMetadata(Produit::class);
+            $collection = new ArrayCollection([1, 2, 3]);
+            if($produit->getArticles()->isEmpty()){
+               
+            }else{
+                
+                $newProduits[] = $produit;
+            }
+            
+            
+            
+            
+            
+        }
+        
         return $this->render('Pages/CommandesAgregation.html.twig',[
                 'Factures'=>$Factures,
                 'Clients'=>$Clients,
                 'Articles'=>$Articles,
-                'Produits'=>$Produits,
+                'Produits'=>$newProduits,
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
                 

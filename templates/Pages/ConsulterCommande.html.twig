@@ -78,9 +78,9 @@
             
             </tbody>
             <tr><td></td><td></td><td>prix total = <td>{{Commande.Total}}€</td><td></td><tr>
-            <td></td><td colspan=""><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder">
+            <td ><input style="border: none;font-size:20px;" class="ButtonClass2" type="submit" value="Sauvegarder"><td></td>
             <td><a href='Facture?idCommande={{Commande.id}}' class="buttonClass2" id='Imprimer'  >facture</a></td><td colspan="2"><a  class='ButtonClass2' name="add" id="add" >Ajouter un article</a></td>
-            
+            <tr><td><a onclick="checker()" class="buttonClass" href="/CommandeSuppr?CommandeSuppr={{Commande.id}}">Supprimer Commande</a></td></tr>
             </table>
             
   
@@ -106,7 +106,13 @@
       
         console.log('debug');
     });
-
+ function checker(){
+        console.log('test');
+        var result = confirm('Cette commande sera supprimé, êtes vous sur ?');
+        if(result == false){
+            event.preventDefault();
+        }
+    }
 
 </script>
 
