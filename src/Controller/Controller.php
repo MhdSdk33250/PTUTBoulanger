@@ -176,153 +176,70 @@ class Controller extends AbstractController
      */
     public function Modif(Request $request){
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $nbrArticlesApresModif=sizeof($_GET["produits"]);
-        
-        $idClient = $_GET['idClient'];
-         
-        
 
-        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
-        $Client = $repositoryClients->findOneBy(['id'=>$idClient]);
-
-        $manager = $this->getDoctrine()->getManager();
         
-        //nouveau client
+    //ON RECUPERE LE MANAGER
+        $entityManager=$this->getDoctrine()->getManager();
+    //ON RECUPERE L'OBJET COMMANDE
         $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class); 
         $idCommande = $_GET['idCommande'];
         $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
-        
-        
-        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class); 
-        $articles = $Commande->getArticles();;
-        $articleVerifRedondance = [];
-        
 
-
-        for($i = 0;$i != $nbrArticlesApresModif;$i++){
-            $idProduit = $_GET["produits"][$i];
-            $qteArticle = $_GET["qte"][$i];
-            $idCategorieArticle = $_GET["Poids"][$i];
-            
-            $articleVerifRedondance[$i][] = $idProduit;
-            
-            $articleVerifRedondance[$i][] = $idCategorieArticle;
-
+    //ON PURGE LA COMMANDE DE CES ARTICLES
+        foreach($Commande->getArticles() as $article){
+            $entityManager->remove($article);
+            $entityManager->flush();
         }
+    //ON RECUPERE LES DONNEES DU FORM
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        $idClient = $_GET['idClient'];
+        $date = $_GET['date'];
+        $listeIdProduits = [];
+        if(isset($_GET['produits'])){
+        foreach($_GET['produits'] as $idProduits){
+            $listeIdProduits[] = $idProduits;
+        }}
+        $listeQuantites = [];
+        if(isset($_GET['qte'])){
+        foreach($_GET['qte'] as $qte){
+            $listeQuantites[] = $qte;
+        }}
+        $listePoids = [];
+        if(isset($_GET['Poids'])){
+        foreach($_GET['Poids'] as $poids){
+            $listePoids[] = $poids;
+        }}
 
-        
-
-        
-        $nbrArticlesAvantModif = 0;
-        foreach($articles as $article){
-            $nbrArticlesAvantModif = $nbrArticlesAvantModif +1;
+    //ON MET A JOUR LES ARTICLES A PARTIR DU FORM
+    $nombreArticles = 0;
+        foreach($listeIdProduits as $idProduit){
+            $nombreArticles = $nombreArticles +1;
         }
-        
-        
-
-        for($i = 0;$i != $nbrArticlesAvantModif;$i++){
-            $idProduit = $_GET["produits"][$i];
-            $qteArticle = $_GET["qte"][$i];
-            $idCategorieArticle = $_GET["Poids"][$i];
+        for($nbrArt = 0; $nbrArt!=$nombreArticles;$nbrArt++){
+            $article = new Article();
 
             $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
-            $Produit = $repositoryProduits->findOneBy(['id'=>$idProduit]);  
-
+            $Produit = $repositoryProduits->findOneBy(['id'=>$listeIdProduits[$nbrArt]]);
+            $article->setProduit($Produit);
+            $article->setQte($listeQuantites[$nbrArt]);
             $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
-            $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
-            
-            $articles[$i]->setProduit($Produit);
-            $articles[$i]->setQte($qteArticle);
-            $articles[$i]->setCategorie($Categorie);
+            $Categorie = $repositoryCategorie->findOneBy(['id'=>$listePoids[$nbrArt]]);  
+            $article->setCategorie($Categorie);
             $total = $article->getQte() * ($article->getCategorie()->getPoids() / 1000);$total = $total * $article->getProduit()->getPrixUnitaire();
             $article->setTotal($total);
-            
-            
-            $articleVerifRedondance[] = $articles[$i];
-            
-            
-        }
-        
+            $Commande->addArticle($article);
+            $entityManager->persist($article);
+            $entityManager->flush();
 
-        for($j = $nbrArticlesAvantModif;$j != $nbrArticlesApresModif;$j++){
-            
-            $articles[$j] = new Article();
-            
-            
-            $idProduit = $_GET["produits"][$j];
-            $qteArticle = $_GET["qte"][$j];
-            $idCategorieArticle = $_GET["Poids"][$j];
+            $entityManager->persist($Commande);
+            $entityManager->flush();
 
-            $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
-            $Produit = $repositoryProduits->findOneBy(['id'=>$idProduit]);  
-
-            $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
-            $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
-            
-            $articles[$j]->setProduit($Produit);
-            $articles[$j]->setQte($qteArticle);
-            $articles[$j]->setCategorie($Categorie);
-            $total = $articles[$j]->getQte() * ($articles[$j]->getCategorie()->getPoids() / 1000);$total = $total * $articles[$j]->getProduit()->getPrixUnitaire();
-            $articles[$j]->setTotal($total)
-            ->setFacture($Commande);
-            
-            
-            $manager->persist($articles[$j]);
-            $Commande->addArticle($articles[$j]);
-            
-
-            
-            $articleVerifRedondance[] = $articles[$j];
-            
-            //LIER LOBJET A LA BD
-            //PERSIST ET FLUSH LOBJET!!!
-            
-        }$total = 0;
-        foreach($Commande->getArticles()  as $article){
-            $total = $total + $article->getTotal();
-        }
-        $Commande->setTotal($total);
-        
-        
-        
-
-        
-        
-        
-        $manager->persist($Client);
-        
-        //on crée la commande (commande = facture)
-        
-        $Commande->setDate(new \DateTime($_GET['date']))
-            ->setClient($Client);
-        $manager->persist($Commande);
-        
-
-        $taille = sizeof($articleVerifRedondance);
-        $articleVerifRedondance = array_intersect_key($articleVerifRedondance, array_unique(array_map('serialize', $articleVerifRedondance)));
-        
-        
-        if(sizeof($articleVerifRedondance) != $taille ){
-            echo "deux articles sont identiques, veuillez saisir un article different par ligne";die;
-            
-        }else{
-            echo "ok";$manager->flush();
         }
         
         return $this->redirectToRoute("ConsulterCommande",['idCommande'=>$idCommande]);
     
     }
- /**
+    /**
      * @Route("/Clients",name="Clients")
      */
     public function Clients(){
