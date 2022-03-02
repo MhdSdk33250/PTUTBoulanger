@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use Symfony\Component\Validator\Constraints\DateTime;
 use App\Entity\User;
 use App\Entity\Produit;
 use App\Entity\Article;
@@ -73,12 +74,12 @@ class Controller extends AbstractController
         $repositoryCommandes = $this->getDoctrine()->getRepository(Facture::class); 
         $idCommande = $_GET['idCommande'];
         $Commande = $repositoryCommandes->findOneBy(['id'=>$idCommande]);
-
+        
         $entityManager->remove($Article);
         $entityManager->flush();
 
 
-        return $this->redirectToRoute("ConsulterCommande",['idCommande'=>$idCommande]);
+        return $this->redirectToRoute("Modif",['idCommande'=>$idCommande]);
 
 
 
@@ -214,7 +215,7 @@ class Controller extends AbstractController
     $nombreArticles = 0;
         foreach($listeIdProduits as $idProduit){
             $nombreArticles = $nombreArticles +1;
-        }
+        }$totalCommande = 0;
         for($nbrArt = 0; $nbrArt!=$nombreArticles;$nbrArt++){
             $article = new Article();
 
@@ -230,7 +231,8 @@ class Controller extends AbstractController
             $Commande->addArticle($article);
             $entityManager->persist($article);
             $entityManager->flush();
-
+            $totalCommande = $totalCommande + $total;
+            $Commande->setTotal($totalCommande);
             $entityManager->persist($Commande);
             $entityManager->flush();
 
@@ -623,6 +625,7 @@ public function NouveauClient(Request $request){
         $entityManager=$this->getDoctrine()->getManager();
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
+        $newProduits = [];
         foreach($Produits as $produit){
             
             $metadata = $entityManager->getClassMetadata(Produit::class);
@@ -639,7 +642,41 @@ public function NouveauClient(Request $request){
             
             
         }
-        
+        $dateSelectionne = new \DateTime('NOW');
+        if(isset($_GET['Date'])){
+            echo "une date a ete selectionne";
+            $dateSelectionne = new \DateTime($_GET['Date']);
+            $i = 0;
+            
+
+            while ($i < count($Factures))
+            {
+                if($Factures[$i]->getDate()->format('Y-m-d') != $_GET['Date']){
+                    
+                    $Factures[$i] = NULL;
+                }
+                $i++;
+            }
+
+
+
+        }else{
+            echo "aucune date na ete selectionne, ou date du jour";
+            $j = 0;
+            while ($j < count($Factures))
+            {   echo "<br>";
+                echo $Factures[$j]->getDate()->format('Y-m-d') ;
+                echo "<br>";
+                echo $dateSelectionne->format('Y-m-d');
+                if($Factures[$j]->getDate()->format('Y-m-d') != $dateSelectionne->format('Y-m-d')){
+                    
+                    echo "une facture est supprime";
+                    $Factures[$j] = NULL;
+                }
+                $j++;
+            }
+        }
+        $Factures = array_filter($Factures); 
         return $this->render('Pages/CommandesAgregation.html.twig',[
                 'Factures'=>$Factures,
                 'Clients'=>$Clients,
@@ -647,6 +684,7 @@ public function NouveauClient(Request $request){
                 'Produits'=>$newProduits,
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
+                'dateSelection'=>$dateSelectionne,
                 
         ]
 

@@ -9,6 +9,12 @@
 <li><a  href="Accueil">Retour a l'accueil</a></li>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>window.onload = function() {
+	if(!window.location.hash) {
+		window.location = window.location + '#loaded';
+		window.location.reload();
+	}
+}</script>
   <li id="profilDD" style="float:right; cursor:pointer;"> 
   <div id="dropDownUsr">
 
@@ -27,7 +33,7 @@
 
 
 
-<form action="Modif">
+<form id="myform" action="Modif">
 <table style="width:1000px;margin:auto;" class="styled-table">
               
                 <tr  id="Sticky">
@@ -54,7 +60,7 @@
                     </tr><tbody id="tbodytab">
                 {% for article in Commande.articles %}
 
-            <tr><td ><select name="produits[]" id="produitselected">
+            <tr id="row"><td ><select name="produits[]" id="produitselected">
             
             {% for produitoption in Produits %}
                 <option {% if article.produit.id == produitoption.id %} {{" selected "}} {% endif %} value="{{produitoption.id}}">{{produitoption.nomProduit}}  ({{produitoption.prixUnitaire}}€ / kg)</option>
@@ -73,7 +79,7 @@
             
             </td>
             <td>{{article.total}}€</td>
-            <td><a class="buttonClass" href="/ArticleSuppr?idCommande={{Commande.id}}&idArticle={{article.id}}">Supprimer</a></td></tr>
+             <td><a type='button'  id='del' class='ButtonClass' >Supprimer</a></td></tr>
             {% endfor %}
             
             </tbody>
@@ -100,6 +106,11 @@
     $(document).on('click', '#del', function () {
       
         $(this).closest('#row').remove();
+         setTimeout(function(){
+        document.forms["myform"].submit();
+
+    }, 100);
+
     });
 
     $(document).on('click', '#Imprimer', function () {

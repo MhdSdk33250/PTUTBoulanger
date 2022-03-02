@@ -58,6 +58,11 @@ function myFunction(){
 
 
 <center><a class="buttonClass2" id='Imprimer' onclick="myFunction()" >Imprimer la table</a></center>
+<br>
+<label>DATE : </label>
+<form id="formDate" method="GET" action="Commandes">
+<input value={{dateSelection|date("Y-m-d")}} name="Date" id="datePicker" type="date" id="start" name="trip-start">
+</form>
 
 
 
@@ -259,5 +264,11 @@ function myFunction(){
             </table>
             
 </div>
-
+<script type="text/javascript">
+$( function() {
+   $('#datePicker').change(function(){
+      $('#formDate').submit();
+   });
+});
+</script>
 {% endblock body %}
