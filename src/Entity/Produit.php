@@ -50,6 +50,11 @@ class Produit
      */
     private $kgPateParKg;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ingredient::class, mappedBy="produit")
+     */
+    private $ingredients;
+
 
 
 
@@ -62,6 +67,7 @@ class Produit
     public function __construct()
     {
         $this->Articles = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
         
     }
 
@@ -156,6 +162,36 @@ class Produit
     public function setKgPateParKg(?float $kgPateParKg): self
     {
         $this->kgPateParKg = $kgPateParKg;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ingredient[]
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(ingredient $ingredient): self
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients[] = $ingredient;
+            $ingredient->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(ingredient $ingredient): self
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredient->getProduit() === $this) {
+                $ingredient->setProduit(null);
+            }
+        }
 
         return $this;
     }

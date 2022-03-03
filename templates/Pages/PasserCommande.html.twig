@@ -43,7 +43,7 @@
             {% endfor %}
             
             </select></td></tr>
-             <tr><td colspan="3">date de livraison</td><td><input required="required" name="date" type="date" style="font-size:20px;" value=""></td></tr>
+             <tr><td colspan="3">date de livraison</td><td><input required="required" name="date" type="date" min={{dateDuJour|date("Y-m-d")}} style="font-size:20px;" value=""></td></tr>
             <tr  id="Sticky">
                     <td >Articles</td>
                     <td >quantité</td>

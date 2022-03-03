@@ -30,10 +30,10 @@
 <nav id="navbar">
 
 <ul>
-<li><a  href="Accueil">Accueil</a></li>
-  <li><a  href="Commandes">Commandes</a></li>
-  <li><a  href="Produits">Produits</a></li>
-  <li><a  href="Clients">Clients</a></li>
+<li><a {% if selected == 1 %} style="background-color: #009879;" {% endif %}    href="Accueil">Accueil</a></li>
+  <li><a {% if selected == 2 %} style="background-color: #009879;" {% endif %}    href="Commandes">Commandes</a></li>
+  <li><a {% if selected == 3 %} style="background-color: #009879;" {% endif %}     href="Produits">Produits</a></li>
+  <li><a {% if selected == 4 %} style="background-color: #009879;" {% endif %}     href="Clients">Clients</a></li>
 
   <li id="profilDD" style="float:right; cursor:pointer;"> 
   <div id="dropDownUsr">

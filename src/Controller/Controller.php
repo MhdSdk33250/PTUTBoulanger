@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Controller;
+use DateInterval;
 use Symfony\Component\Validator\Constraints\DateTime;
 use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use App\Entity\Produit;
 use App\Entity\Article;
 use App\Entity\Client;
@@ -120,49 +122,54 @@ class Controller extends AbstractController
             $Commande = new Facture();
             $Commande->setClient($Client);
             $Commande->setDate(new \DateTime($_GET['date']));
-
-            $nbrArticles=sizeof($_GET["produits"]);
-            for($i = 0;$i != $nbrArticles;$i++){
-                $article = new Article();
-                
-                
-
-                $idProduit = $_GET["produits"][$i];
-                $qteArticle = $_GET["qte"][$i];
-                $idCategorieArticle = $_GET["Poids"][$i];
-
-                $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
-                $Produit = $repositoryProduits->findOneBy(['id'=>$idProduit]);  
-
-                $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
-                $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
-                $Commande->addArticle($article);
-                $article->setProduit($Produit);
-                $article->setQte($qteArticle);
-                $article->setCategorie($Categorie);
-                echo "Calcul : ".$article->getQte()."x".($article->getCategorie()->getPoids() / 1000)."x".$article->getProduit()->getPrixUnitaire();
-                $total = $article->getQte() * ($article->getCategorie()->getPoids() / 1000) * $article->getProduit()->getPrixUnitaire();
-                echo "<br> calculé : ".$total;
-                $article->setTotal($total);
-                
-                
-
-
-
-                $total = 0;
-                foreach($Commande->getArticles()  as $article){
-                $total = $total + $article->getTotal();
-                }
-                $Commande->setTotal($total);
-                $entityManager->persist($article);
-                $entityManager->persist($Commande);
-                $entityManager->flush();
-                
-                }header('Location:ConsulterCommande?idCommande='.$Commande->getId());die;
+            if(isset($_GET["produits"])){
+                $nbrArticles=sizeof($_GET["produits"]);
+                for($i = 0;$i != $nbrArticles;$i++){
+                    $article = new Article();
+                    
+                    
+    
+                    $idProduit = $_GET["produits"][$i];
+                    $qteArticle = $_GET["qte"][$i];
+                    $idCategorieArticle = $_GET["Poids"][$i];
+    
+                    $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+                    $Produit = $repositoryProduits->findOneBy(['id'=>$idProduit]);  
+    
+                    $repositoryCategorie = $this->getDoctrine()->getRepository(Categorie::class);
+                    $Categorie = $repositoryCategorie->findOneBy(['id'=>$idCategorieArticle]);  
+                    $Commande->addArticle($article);
+                    $article->setProduit($Produit);
+                    $article->setQte($qteArticle);
+                    $article->setCategorie($Categorie);
+                    echo "Calcul : ".$article->getQte()."x".($article->getCategorie()->getPoids() / 1000)."x".$article->getProduit()->getPrixUnitaire();
+                    $total = $article->getQte() * ($article->getCategorie()->getPoids() / 1000) * $article->getProduit()->getPrixUnitaire();
+                    echo "<br> calculé : ".$total;
+                    $article->setTotal($total);
+                    
+                    
+    
+    
+    
+                    $total = 0;
+                    foreach($Commande->getArticles()  as $article){
+                    $total = $total + $article->getTotal();
+                    }
+                    $Commande->setTotal($total);
+                    $entityManager->persist($article);
+                    
+                    $entityManager->flush();
+                    
+                    }
+            }
+            $entityManager->persist($Commande);
+                $entityManager->flush();header('Location:ConsulterCommande?idCommande='.$Commande->getId());die;
         }else{
+            $dateSelectionne = new \DateTime();
+            $dateSelectionne->add(new DateInterval('P2D'));
             return $this->render('Pages/PasserCommande.html.twig',[
                 'Commande'=>$Commande,'Produits'=>$Produits,'Categories'=>$Categories
-                ,'Clients'=>$Clients
+                ,'Clients'=>$Clients,'dateDuJour'=>$dateSelectionne,
                 
         ]
     
@@ -271,6 +278,7 @@ class Controller extends AbstractController
                 'Produits'=>$Produits,
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
+                'selected'=>4,
                 
  ]);
 
@@ -322,6 +330,7 @@ class Controller extends AbstractController
                 'Produits'=>$Produits,
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
+                'selected'=>1,
                 
         ]
 
@@ -585,6 +594,7 @@ public function NouveauClient(Request $request){
                 'Produits'=>$Produits,
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
+                'selected'=>3,
                 
         ]
 
@@ -644,7 +654,7 @@ public function NouveauClient(Request $request){
         }
         $dateSelectionne = new \DateTime('NOW');
         if(isset($_GET['Date'])){
-            echo "une date a ete selectionne";
+            
             $dateSelectionne = new \DateTime($_GET['Date']);
             $i = 0;
             
@@ -661,16 +671,13 @@ public function NouveauClient(Request $request){
 
 
         }else{
-            echo "aucune date na ete selectionne, ou date du jour";
+            
             $j = 0;
             while ($j < count($Factures))
-            {   echo "<br>";
-                echo $Factures[$j]->getDate()->format('Y-m-d') ;
-                echo "<br>";
-                echo $dateSelectionne->format('Y-m-d');
+            {   
                 if($Factures[$j]->getDate()->format('Y-m-d') != $dateSelectionne->format('Y-m-d')){
                     
-                    echo "une facture est supprime";
+                    
                     $Factures[$j] = NULL;
                 }
                 $j++;
@@ -685,6 +692,7 @@ public function NouveauClient(Request $request){
                 'Categories'=>$Categories,
                 'nomUtilisateur'=>$username,
                 'dateSelection'=>$dateSelectionne,
+                'selected'=>2,
                 
         ]
 
