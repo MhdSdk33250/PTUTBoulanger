@@ -2,7 +2,9 @@
 
 
         {% block stylesheets %}
-
+            <style type="text/css" media="print">
+            @page { size: landscape; }
+            </style>
             <link rel="stylesheet" href="./Style.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta charset="UTF-8">
@@ -23,7 +25,7 @@ function myFunction(){
     windowContent += '<img src="' + dataUrl + '">';
     windowContent += '</body>';
     windowContent += '</html>';
-    var printWin = window.open("","","width=900","height=700");
+    var printWin = window.open("","","","");
     printWin.document.open();
     printWin.document.write(windowContent);
     printWin.document.close();
@@ -86,7 +88,7 @@ function myFunction(){
                             
 
 
-                   <td colspan="3">{{produit.nomProduit}} </td>
+                   <td class="nomProduitTableau" colspan="3">{{produit.nomProduit}} </td>
                       
                     {% endfor %}
 
