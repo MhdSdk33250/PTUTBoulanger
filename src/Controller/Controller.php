@@ -156,13 +156,14 @@ class Controller extends AbstractController
                     $total = $total + $article->getTotal();
                     }
                     $Commande->setTotal($total);
+                    $entityManager->persist($Commande);
                     $entityManager->persist($article);
                     
                     $entityManager->flush();
                     
                     }
             }
-            $entityManager->persist($Commande);
+            
                 $entityManager->flush();header('Location:ConsulterCommande?idCommande='.$Commande->getId());die;
         }else{
             $dateSelectionne = new \DateTime();
