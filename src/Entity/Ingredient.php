@@ -18,28 +18,53 @@ class Ingredient
     private $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $qte;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeIngredient::class, inversedBy="Ingredients")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $typeIngredient;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="ingredients")
+     * @ORM\ManyToOne(targetEntity=IngredientsCateg::class, inversedBy="Ingredients")
      */
-    private $produit;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $qte;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $typeQte;
+    private $ingredientsCateg;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getQte(): ?int
+    {
+        return $this->qte;
+    }
+
+    public function setQte(int $qte): self
+    {
+        $this->qte = $qte;
+
+        return $this;
+    }
+
+    public function getTypeIngredient(): ?TypeIngredient
+    {
+        return $this->typeIngredient;
+    }
+
+    public function setTypeIngredient(?TypeIngredient $typeIngredient): self
+    {
+        $this->typeIngredient = $typeIngredient;
+
+        return $this;
     }
 
     public function getNom(): ?string
@@ -54,38 +79,14 @@ class Ingredient
         return $this;
     }
 
-    public function getProduit(): ?Produit
+    public function getIngredientsCateg(): ?IngredientsCateg
     {
-        return $this->produit;
+        return $this->ingredientsCateg;
     }
 
-    public function setProduit(?Produit $produit): self
+    public function setIngredientsCateg(?IngredientsCateg $ingredientsCateg): self
     {
-        $this->produit = $produit;
-
-        return $this;
-    }
-
-    public function getQte(): ?float
-    {
-        return $this->qte;
-    }
-
-    public function setQte(float $qte): self
-    {
-        $this->qte = $qte;
-
-        return $this;
-    }
-
-    public function getTypeQte(): ?string
-    {
-        return $this->typeQte;
-    }
-
-    public function setTypeQte(string $typeQte): self
-    {
-        $this->typeQte = $typeQte;
+        $this->ingredientsCateg = $ingredientsCateg;
 
         return $this;
     }

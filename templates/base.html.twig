@@ -31,8 +31,18 @@
 
 <ul>
 <li><a {% if selected == 1 %} style="background-color: #009879;" {% endif %}    href="Accueil">Accueil</a></li>
-  <li><a {% if selected == 2 %} style="background-color: #009879;" {% endif %}    href="Commandes">Commandes</a></li>
+  <li class="dropDown">
+    <div id="dpCONTENT">
+
+    <a style="  text-align: left;" href="Commandes">Agregation par produit</a>
+    <a style="  text-align: left;" href="AgregationIngredients">Agregation par ingrédient</a>
+  </div>
+  <a {% if selected == 2 %} style="background-color: #009879;" {% endif %}    href="Commandes">Agregation</a>
+  </li>
+
+
   <li><a {% if selected == 3 %} style="background-color: #009879;" {% endif %}     href="Produits">Produits</a></li>
+  <li><a {% if selected == 5 %} style="background-color: #009879;" {% endif %}     href="Ingredients">Ingredients</a></li>
   <li><a {% if selected == 4 %} style="background-color: #009879;" {% endif %}     href="Clients">Clients</a></li>
 
   <li id="profilDD" style="float:right; cursor:pointer;"> 
@@ -43,7 +53,7 @@
   <a>  Profil </a>
 </li>
 </ul>
-
+    
 
 </nav>
 

@@ -10,6 +10,9 @@ use App\Entity\Article;
 use App\Entity\Client;
 use App\Entity\Facture;
 use App\Entity\Categorie;
+use App\Entity\Ingredient;
+use App\Entity\TypeIngredient;
+use App\Entity\IngredientsCateg;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,23 +25,20 @@ class Controller extends AbstractController
 {
     
     /**
-     * @Route("/Facture",name="Facture")
+     * @Route("/Facture",name="Facture") 
      */
-    public function Facture(Request $request){
-        $repositoryFacture = $this->getDoctrine()->getRepository(Facture::class); 
+    public function Facture(Request $request){ // fonction executé lors de la requete du client
+        $repositoryFacture = $this->getDoctrine()->getRepository(Facture::class);
+        // on récupère le "repository" de la classe facture
         $Facture = $repositoryFacture->findOneBy(['id'=>$_GET['idCommande']]);
-        
-
-
-        return $this->render('Pages/Facture.html.twig',[
-                'Facture'=>$Facture,
-                
+        // on effectue une requete a travers le repository pour récupérer l'objet facture
+        // corrspondant a la commande demandé 
+        return $this->render('Pages/Facture.html.twig',[ // on retourne au client le template twig 
+                'Facture'=>$Facture, // parametres a envoyer a la vue
         ]
-    
     );
-
-
     }
+    
  /**
      * @Route("/ClientSuppr",name="ClientSuppr")
      */
@@ -154,7 +154,9 @@ class Controller extends AbstractController
                     $total = 0;
                     foreach($Commande->getArticles()  as $article){
                     $total = $total + $article->getTotal();
+                    
                     }
+                    
                     $Commande->setTotal($total);
                     $entityManager->persist($Commande);
                     $entityManager->persist($article);
@@ -162,6 +164,17 @@ class Controller extends AbstractController
                     $entityManager->flush();
                     
                     }
+                    
+            }
+            foreach($Commande->getArticles() as $article){
+                $verif = 0;
+                foreach($Commande->getArticles() as $articleVerif){
+                    if($article->getProduit() == $articleVerif->getProduit()){
+                        
+
+                    }
+                }
+
             }
             
                 $entityManager->flush();header('Location:ConsulterCommande?idCommande='.$Commande->getId());die;
@@ -636,6 +649,109 @@ public function NouveauClient(Request $request){
         $entityManager=$this->getDoctrine()->getManager();
         $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
         $Categories = $repositoryCategories->findAll();
+        
+        $dateSelectionne = new \DateTime('NOW');
+        if(isset($_GET['Date'])){
+            
+            $dateSelectionne = new \DateTime($_GET['Date']);
+            $i = 0;
+            
+
+            while ($i < count($Factures))
+            {
+                if($Factures[$i]->getDate()->format('Y-m-d') != $_GET['Date']){
+                    
+                    $Factures[$i] = NULL;
+                }
+                $i++;
+            }
+
+
+
+        }else{
+            
+            $j = 0;
+            while ($j < count($Factures))
+            {   
+                if($Factures[$j]->getDate()->format('Y-m-d') != $dateSelectionne->format('Y-m-d')){
+                    
+                    
+                    $Factures[$j] = NULL;
+                }
+                $j++;
+            }
+        }
+        $newProduits = [];
+        foreach($Produits as $produit){
+            
+            $metadata = $entityManager->getClassMetadata(Produit::class);
+           
+            if($produit->getArticles()->isEmpty()){
+               
+            }else{
+                $article = $produit->getArticles();
+                $commande = $article[0]->getFacture();
+                if($commande->getDate() == $dateSelectionne){
+                    $newProduits[] = $produit;
+                }
+                
+            }
+            
+            
+            
+            
+            
+        }
+        $Factures = array_filter($Factures); 
+        return $this->render('Pages/CommandesAgregation.html.twig',[
+                'Factures'=>$Factures,
+                'Clients'=>$Clients,
+                'Articles'=>$Articles,
+                'Produits'=>$newProduits,
+                'Categories'=>$Categories,
+                'nomUtilisateur'=>$username,
+                'dateSelection'=>$dateSelectionne,
+                'selected'=>2,
+                
+        ]
+
+    );
+    }
+
+
+    /**
+     * @Route("/AgregationIngredients",name="AgregationIngredients")
+     */
+    public function AgregationIngredients(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $userObject=$this->getUser();
+        $username = $userObject->getUsername();
+        $repositoryProduits = $this->getDoctrine()->getRepository(Produit::class);
+        $Produits = $repositoryProduits->findAll();
+
+        $repositoryArticles = $this->getDoctrine()->getRepository(Article::class);
+        $Articles = $repositoryArticles->findAll();       
+
+        $repositoryClients = $this->getDoctrine()->getRepository(Client::class);
+        $Clients = $repositoryClients->findAll();   
+
+        $repositoryFactures = $this->getDoctrine()->getRepository(Facture::class);
+        $Factures = $repositoryFactures->findAll();
+
+        $repositoryTypeIngredients = $this->getDoctrine()->getRepository(TypeIngredient::class);
+        $TypeIngredients = $repositoryTypeIngredients->findAll();
+
+        $repositoryIngredients = $this->getDoctrine()->getRepository(Ingredient::class);
+        $Ingredients = $repositoryIngredients->findAll();
+
+
+        $repositoryIngredientsCateg = $this->getDoctrine()->getRepository(IngredientsCateg::class);
+        $IngredientsCateg = $repositoryIngredientsCateg->findAll();
+
+        $entityManager=$this->getDoctrine()->getManager();
+        $repositoryCategories = $this->getDoctrine()->getRepository(Categorie::class);
+        $Categories = $repositoryCategories->findAll();
         $newProduits = [];
         foreach($Produits as $produit){
             
@@ -685,14 +801,17 @@ public function NouveauClient(Request $request){
             }
         }
         $Factures = array_filter($Factures); 
-        return $this->render('Pages/CommandesAgregation.html.twig',[
+        return $this->render('Pages/CommandesAgregationIngredients.html.twig',[
                 'Factures'=>$Factures,
                 'Clients'=>$Clients,
                 'Articles'=>$Articles,
                 'Produits'=>$newProduits,
                 'Categories'=>$Categories,
+                'Ingredients'=>$Ingredients,
+                'TypeIngredients'=>$TypeIngredients,
                 'nomUtilisateur'=>$username,
                 'dateSelection'=>$dateSelectionne,
+                'IngredientsCateg'=>$IngredientsCateg,
                 'selected'=>2,
                 
         ]
@@ -701,6 +820,7 @@ public function NouveauClient(Request $request){
     }
 
 
+    
     
 
  

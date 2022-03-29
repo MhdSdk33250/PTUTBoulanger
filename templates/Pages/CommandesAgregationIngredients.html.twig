@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+
+        {% block stylesheets %}
+            <style type="text/css" media="print">
+            
+            </style>
+            <link rel="stylesheet" href="./Style.min.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% endblock %}
+{% block body %}
+<div id="flex">
+
+<script>
+
+function myFunction(){
+  html2canvas(document.getElementById('styled-table')).then(function(canvas) {
+    var dataUrl = canvas.toDataURL(); //attempt to save base64 string to server using this var  
+    var windowContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+    img{
+      object-fit:contain;
+    }
+    @page { size: landscape;
+     height:297mm;
+    width:210mm;
+    margin:10px;
+         }</style>
+    <title>Print canvas</title></head>
+    <body>
+    <img src="` + dataUrl + `">
+    </body>
+    </html>
+    
+    `
+
+
+
+    var printWin = window.open("","","","");
+
+    
+
+    printWin.document.open();
+    printWin.document.write(windowContent);
+    printWin.document.close();
+
+    printWin.focus();
+    printWin.print();
+    
+});
+}
+//function myFunction(){
+
+  //var printme = document.getElementById('styled-table');
+  //var wme = window.open("","","width=900","height=700");
+  //wme.document.write(printme.outerHTML);
+  //wme.document.close();
+  //wme.focus();
+  //wme.print();
+  
+
+//}
+
+</script>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="containermenu" id="flexcontainermenu">
+    <span style="color:white; margin-top:10px; margin-left:10px;">
+    connecté sur le compte de : {{nomUtilisateur}}  </span>
+
+    <div id="divrecherche">
+       
+
+
+
+<center><a class="buttonClass2" id='Imprimer' onclick="myFunction()" >Imprimer la table</a></center>
+<br>
+<label>DATE : </label>
+<form id="formDate" method="GET" action="Commandes">
+<input value={{dateSelection|date("Y-m-d")}} name="Date" id="datePicker" type="date" id="start" name="trip-start">
+</form>
+
+
+
+
+
+    </div>
+    </div>
+<div id="DivAgregation">
+
+<table id="styled-table" class="styled-table">
+              
+                <tr id="Sticky">
+                 
+                    <td></td>
+
+                    {% for Categ in IngredientsCateg %}
+
+                            
+
+                  
+                  <td>{{Categ.nom()}}</td>
+                      
+                    {% endfor %}
+
+                </tr>
+               
+              
+              <tbody>
+
+                  {% for type in TypeIngredients %}
+                    <tr><td>{{type.type()}}</td></tr>
+                  {% endfor %}
+              </tbody>
+
+              
+            </table>
+            
+</div>
+<script type="text/javascript">
+$( function() {
+   $('#datePicker').change(function(){
+      $('#formDate').submit();
+   });
+});
+</script>
+{% endblock body %}

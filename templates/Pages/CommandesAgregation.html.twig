@@ -3,7 +3,7 @@
 
         {% block stylesheets %}
             <style type="text/css" media="print">
-            @page { size: landscape; }
+            
             </style>
             <link rel="stylesheet" href="./Style.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,17 +17,31 @@
 
 function myFunction(){
   html2canvas(document.getElementById('styled-table')).then(function(canvas) {
-    var dataUrl = canvas.toDataURL(); //attempt to save base64 string to server using this var  
-    var windowContent = '<!DOCTYPE html>';
-    windowContent += '<html>'
-    windowContent += '<head><title>Print canvas</title></head>';
-    windowContent += '<body>'
-    windowContent += '<img src="' + dataUrl + '">';
-    windowContent += '</body>';
-    windowContent += '</html>';
-    var printWin = window.open("","","","");
+    var dataUrl = canvas.toDataURL(); //On sauvegarde la table sous forme d'image en base 64 
+    var windowContent = // puis on génère une page qui affiche cette image 
+    ` 
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+    img{
+      object-fit:contain;
+    }
+    @page { size: landscape;
+     height:297mm;
+    width:210mm;
+    margin:10px;
+         }</style>
+    <title>Print canvas</title></head>
+    <body>
+    <img src="` + dataUrl + `">
+    </body>
+    </html>
+    
+    `
+    var printWin = window.open("","","",""); // ouvre la fenetre d'impression
     printWin.document.open();
-    printWin.document.write(windowContent);
+    printWin.document.write(windowContent); // le parametre represente la page avec l'image du tableau
     printWin.document.close();
     printWin.focus();
     printWin.print();
